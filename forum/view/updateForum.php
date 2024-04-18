@@ -1,6 +1,6 @@
 <?php
-include_once "../controller/forumC.php";
-include_once "../model/forum.php";
+include_once "c:/wamp64/www/evaluation/forum/controller/forumC.php";
+include_once "c:/wamp64/www/evaluation/forum/model/forum.php";
 
 $error = "";
 
@@ -49,8 +49,8 @@ if (
 <button><a href="listForum.php">Back to list</a></button>
     <hr>
 
-    <div id="error">
-        <?php echo $error; ?>
+    <div id="erreur">
+        <?php echo $erreur; ?>
     </div>
 
     <?php

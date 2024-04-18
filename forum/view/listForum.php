@@ -1,5 +1,5 @@
 <?php
-include_once "c:/wamp64/www/forum/controller/forumC.php";
+include_once "c:/wamp64/www/evaluation/forum/controller/forumC.php";
 
 $forumC = new forumC();
 $list = $forumC->listForum();

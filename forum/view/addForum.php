@@ -1,6 +1,6 @@
 <?php
-include_once "c:/wamp64/www/forum/controller/forumC.php";
-include_once "c:/wamp64/www/forum/model/forum.php";
+include_once "c:/wamp64/www/evaluation/forum/controller/forumC.php";
+include_once "c:/wamp64/www/evaluation/forum/model/forum.php";
 
 $error = "";
 // create Forum
@@ -43,9 +43,7 @@ if (
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum </title>
-   
-    <script src="forum.js"></script>
-    
+
 </head>
 
 <body> 
@@ -160,51 +158,51 @@ if (
         <?php echo $error; ?>
     </div>
 
-    <form action="" method="POST">
+    <form id="forum" method="POST">
         <table>
         <tr>
                 <td><label for="id_forum">id_forum :</label></td>
                 <td>
                     <input type="text" id="id_forum" name="id_forum" />
-                    <span id="id_forumError" style="color: red"></span>
+                    <span id="erreurid_forum" style="color: red"></span>
                 </td>
             </tr>
             <tr>
                 <td><label for="titre">titre :</label></td>
                 <td>
                     <input type="text" id="titre" name="titre" />
-                    <span id="titreError" class="error-message"></span>
+                    <span id="erreurtitre" style="color: red"></span>
                 </td>
             </tr>
             <tr>
                 <td><label for="description">description :</label></td>
                 <td>
                 <input type="text" id="description" name="description" />
-                    <span id="descriptionError" style="color: red"></span>
+                    <span id="erreurdescription" style="color: red"></span>
                 </td>
             </tr>
             <tr>
                 <td><label for="date">date :</label></td>
                 <td>
                     <input type="date" id="date" name="date" />
-                    <span id="dateError" style="color: red"></span>
+                    <span id="erreurdate" style="color: red"></span>
                 </td>
             </tr>
             <tr>
                 <td><label for="categorie">categorie :</label></td>
                 <td>
                 <input type="text" id="categorie" name="categorie" />
-                    <span id="categorieError" style="color: red"></span>
+                    <span id="erreurcategorie" style="color: red"></span>
                 </td>
             </tr>
             <td>
-            <input type="submit" onclick=" return verif()" value="Save">
+            <input type="submit" id="validateButton" value="Save">
             </td>
             <td>
                 <input type="reset" value="Reset">
             </td>
         </table>
-
     </form>
+    <script src="../view/validation.js"></script>
 </body>
 </html>

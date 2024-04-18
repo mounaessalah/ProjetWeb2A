@@ -1,7 +1,7 @@
 <?php
 
-require_once 'C:/wamp64/www/forum/config.php';
-include_once "../model/forum.php";
+require_once 'C:/wamp64/www/evaluation/forum/config.php';
+include_once "c:/wamp64/www/evaluation/forum/model/forum.php";
 
 class forumC
 {
@@ -48,7 +48,7 @@ class forumC
              if ($result) {
                 echo "<script type=\"text/javascript\"> 
                         alert('Ajout avec succès!'); 
-                        window.location.href = 'http://localhost/forum/view/listForum.php';
+                        window.location.href = 'http://localhost/Evaluation/forum/view/creanov/back/listForum.php';
                       </script>";
                 exit(); // Make sure to end the script execution after the redirection
             } else {
@@ -101,7 +101,7 @@ class forumC
             if ($result) {
                 echo "<script type=\"text/javascript\"> 
                         alert('Mise à jour avec succès!'); 
-                        window.location.href = 'http://localhost/forum/view/listForum.php';
+                        window.location.href = 'http://localhost/Evaluation/forum/view/creanov/back/listForum.php';
                       </script>";
                 exit(); // Assurez-vous de mettre fin à l'exécution du script après la redirection
             } else {
