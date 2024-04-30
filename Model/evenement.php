@@ -1,4 +1,4 @@
-+<?php
+<?php
 //de preference def classe , constructeur et setter et getter seulement ici 
 class evenement
 {
@@ -6,18 +6,20 @@ class evenement
     private ?string $titre_evenement = null;
     private ?string $duretotale_evenement = null;
     private ?string $description_evenement = null;
-    private ?string $categorie_evenement = null;
     private ?float $prix_evenement = null;
+    private ?int $idCategorie ;
 
-    public function __construct($id_evenement,$titre_evenement, $duretotale_evenement, $description_evenement, $categorie_evenement, $prix_evenement)
-    {
-        $this->id_evenement = $id_evenement;
-        $this->titre_evenement = $titre_evenement;
-        $this->duretotale_evenement = $duretotale_evenement;
-        $this->description_evenement = $description_evenement;
-        $this->categorie_evenement = $categorie_evenement;
-        $this->prix_evenement = $prix_evenement;
-    }
+
+  
+    public function __construct($id_evenement, $titre_evenement, $duretotale_evenement, $description_evenement, $prix_evenement, $idCategorie)
+{
+    $this->id_evenement = $id_evenement;
+    $this->titre_evenement = $titre_evenement;
+    $this->duretotale_evenement = $duretotale_evenement;
+    $this->description_evenement = $description_evenement;
+    $this->prix_evenement = $prix_evenement;
+    $this->idCategorie = $idCategorie; 
+}
 
     /**
      * Get the value of id_evenement
@@ -87,25 +89,7 @@ class evenement
         return $this;
     }
 
-    /**
-     * Get the value of categorie_evenement
-     */
-    public function getCategorie_evenement()
-    {
-        return $this->categorie_evenement;
-    }
-
-    /**
-     * Set the value of categorie_evenement
-     *
-     * @return  self
-     */
-    public function setCategorie_evenement($categorie_evenement)
-    {
-        $this->categorie_evenement = $categorie_evenement;
-
-        return $this;
-    }
+   
 
     /**
      * Get the value of prix_evenement
@@ -127,4 +111,24 @@ class evenement
         return $this;
     }
 
+
+        /**
+         * Get the value of idCategorie
+         */ 
+        public function getIdCategorie()
+        {
+                return $this->idCategorie;
+        }
+
+        /**
+         * Set the value of idCategorie
+         *
+         * @return  self
+         */ 
+        public function setIdCategorie($idCategorie)
+        {
+                $this->idCategorie = $idCategorie;
+
+                return $this;
+        }
 }

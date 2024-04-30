@@ -9,7 +9,7 @@ class config//classe static
         if (!isset(self::$pdo)) {
             try {
                 self::$pdo = new PDO(
-                    'mysql:host=localhost;dbname=projet',
+                    'mysql:host=localhost;dbname=projett',
                     'root',
                     '',
                     [

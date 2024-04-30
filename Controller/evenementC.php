@@ -30,26 +30,29 @@ class EvenementC
             die('Error:' . $e->getMessage());
         }
     }
-
+    
     public function addEvenement($evenement)
     {
         $sql = "INSERT INTO evenement  
-        VALUES (:id_evenement, :titre_evenement, :duretotale_evenement, :description_evenement, :categorie_evenement, :prix_evenement)";
+                VALUES (:titre_evenement, :duretotale_evenement, :description_evenement, :prix_evenement, :idCategorie)";
         $db = config::getConnexion();
+        
         try {
             $query = $db->prepare($sql);
             $query->execute([
-                'id_evenement' => $evenement->getId_evenement(),
                 'titre_evenement' => $evenement->getTitre_evenement(),
                 'duretotale_evenement' => $evenement->getDuretotale_evenement(),
                 'description_evenement' => $evenement->getDescription_evenement(),
-                'categorie_evenement' => $evenement->getCategorie_evenement(),
-                'prix_evenement' => $evenement->getPrix_evenement()
+                'prix_evenement' => $evenement->getPrix_evenement(),
+                'idCategorie' => $evenement->getIdCategorie()
             ]);
-        } catch (Exception $e) {
+        } catch (Exception $e) 
+        {
             echo 'Error: ' . $e->getMessage();
         }
     }
+
+    
 
     public function updateEvenement($evenement, $id)
     {
@@ -60,7 +63,6 @@ class EvenementC
                     titre_evenement = :titre, 
                     duretotale_evenement = :duree, 
                     description_evenement = :description,
-                    categorie_evenement = :categorie,
                     prix_evenement = :prix
                 WHERE id_evenement = :id'
             );
@@ -69,7 +71,6 @@ class EvenementC
                 'titre' => $evenement->getTitre_evenement(),
                 'duree' => $evenement->getDuretotale_evenement(),
                 'description' => $evenement->getDescription_evenement(),
-                'categorie' => $evenement->getCategorie_evenement(),
                 'prix' => $evenement->getPrix_evenement()
             ]);
             echo $query->rowCount() . " records UPDATED successfully <br>";

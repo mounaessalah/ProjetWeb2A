@@ -1,23 +1,32 @@
 <?php
-include '../Controller/evenementC.php';
+require_once '../Controller/evenementC.php';
+require_once '../Controller/categorieC.php';
 $evenementC = new evenementC();
+$categorieC = new categorieC();
 
 $error = "";
 $evenement = null;
+
+// Récupération des catégories
+
+  $categories = $categorieC->listCategories();
+
 
 if (
     isset($_POST["titre"]) &&
     isset($_POST["duree"]) &&
     isset($_POST["description"]) &&
-    isset($_POST["categorie_evenement"]) &&
-    isset($_POST["prix"])
+    isset($_POST["prix"])&&
+    isset($_POST["categorie_evenement"]) 
+    
 ) {
     if (
         !empty($_POST['titre']) &&
         !empty($_POST["duree"]) &&
         !empty($_POST["description"]) &&
-        !empty($_POST["categorie_evenement"]) &&
-        !empty($_POST["prix"])
+        !empty($_POST["prix"])&&
+        !empty($_POST["idCategorie"]) 
+        
     ) {
         // Créer un nouvel objet evenement avec les données du formulaire
         $evenement = new evenement(
@@ -25,17 +34,21 @@ if (
             $_POST["titre"],
             $_POST["duree"],
             $_POST["description"],
-            $_POST["categorie_evenement"],
-            $_POST["prix"]
+            $_POST["prix"],
+            $_POST["idCategorie"]  // Passer l'ID de la catégorie
+            
         );
         
-        // Ajouter la evenement à la base de données
-        $evenementC->addevenement($evenement);
-        
-        header('Location: Listevenement.php');
-        exit();
+        $result = $evenementC->addevenement($evenement);
+
+        if ($result) {
+            header('Location: Listevenement.php');
+            exit();
+        } else {
+            $error = "Erreur lors de l'ajout de l'événement à la base de données.";
+        }
     } else {
-        $error = "Missing input. All fields are required.";
+        $error = "Veuillez remplir tous les champs du formulaire.";
     }
 }
 ?>
@@ -47,6 +60,7 @@ if (
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  
   
 
   <title>
@@ -65,6 +79,7 @@ if (
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+  <link rel="stylesheet" href="form.css">
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -184,45 +199,53 @@ if (
       </div>
     </nav>
     <form method="POST" id="insertForm" action="upload.php" enctype="multipart/form-data">
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label class="form-label">Titre</label>
-                            <input type="text" class="form-control" name="titre" placeholder="evenement Titre">
-                        </div>
-                        </div>
-                        <div class="row mb-3">
+    <div class="row mb-3">
+        <div class="col">
+            <label id='titreLabel' class="form-label">Titre</label>
+            <input type="text" class="form-control" name="titre" id="titre" placeholder="evenement Titre">
+            <span id="error-titre" class="error-message" style="visibility: hidden;">Le champ Titre ne peut pas être vide.</span>
+            <span id="valid-titre" class="valid-message" style="visibility: hidden;">Titre valide</span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <label class="form-label">Description</label>
+            <input type="text" class="form-control" name="description" id="description" placeholder="evenement Description">
+            <span id="error-description" class="error-message" style="visibility: hidden;">Le champ Description ne peut pas être vide.</span>
+            <span id="valid-description" class="valid-message" style="visibility: hidden;">Description valide</span>
+        </div>
+        <div class="row mb-3">
+        <div class="col">
+            <label class="form-label">Durée</label>
+            <input type="time" class="form-control" name="duree" placeholder="evenement Durée">
+        </div>
+    </div>
+        <div class="col">
+            <label class="form-label">Catégorie</label>
+            <select class="form-select" name="idCategorie">
+                           
+    <?php foreach ($categories as $categorie): ?>
+        <option value="<?php echo $categorie['idCategorie']; ?>">
+            <?php echo $categorie['nom']; ?>
+        </option>
+    <?php endforeach; ?>
 
-                        <div class="col">
-                            <label class="form-label">Description</label>
-                            <input type="text" class="form-control" name="description" placeholder="evenement Description">
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label class="form-label">Durée</label>
-                            <input type="time" class="form-control" name="duree" placeholder="evenement Durée">
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label class="form-label">Catégorie</label>
-                            <select class="form-select" name="categorie_evenement">
-                                <option value="workshop">workshop</option>
-                                <option value="conference">conference</option>
-                                <option value="Atelier">Atelier</option>
-                            </select>         
-                        </div>
-                        <div class="col">
-                            <label class="form-label">Prix</label>
-                            <input type="text" class="form-control" name="prix" placeholder="evenement Prix">
-                        </div>
-                    </div>
-                    <script src="formValidation.js"></script>
-
-                    <div>
-                        <button type="submit" class="btn btn-outline-dark me-1" id="insertBtn">Submit</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancil</button>
-                        </div>
-                        </form>
+     </select>    
+         
+          </div>
+          <div class="col">
+            <label class="form-label">Prix</label>
+            <input type="text" class="form-control" name="prix" placeholder="evenement Prix">
+        </div>
+          <script src="formValidation.js"></script>
+          
+    </div>
+    
+    <div>
+        <button type="submit" class="btn btn-outline-dark me-1" id="insertBtn">Submit</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+   <!-- Affichage des messages d'erreur -->
+   
+    </form>
+</form>

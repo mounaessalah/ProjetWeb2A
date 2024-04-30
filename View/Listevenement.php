@@ -1,9 +1,15 @@
 <?php
 include '../Controller/evenementC.php';
+include '../Controller/categorieC.php';
 
 $evenementC = new evenementC();
 $error = "";
 $list = $evenementC->listevenements();
+// Créez une instance de la classe CategorieC
+$categorieC = new CategorieC();
+
+// Appelez la méthode listCategories pour récupérer toutes les catégories
+$listeCategories = $categorieC->listCategories();
 
 ?>
 <!DOCTYPE html>
@@ -14,6 +20,7 @@ $list = $evenementC->listevenements();
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  
   <title>
     education et formation
   </title>
@@ -38,7 +45,7 @@ $list = $evenementC->listevenements();
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
         <img src="../assets/img/logo111.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold"> mindFllPath</span>
+        <span class="ms-1 font-weight-bold"> MindFullPaths</span>
       </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -122,6 +129,7 @@ $list = $evenementC->listevenements();
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
               <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="upload.php">add event</a>
+              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="uploadcategorie.php">add categorie</a>
             </li>
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
@@ -178,31 +186,36 @@ $list = $evenementC->listevenements();
                   </thead>
                   </thead>
     <tbody>
-        <?php
-        foreach($list as $evenement){
-        ?>
-        <tr>
-            <td><?=$evenement['id_evenement'];?></td>
-            <td><?=$evenement['titre_evenement'];?></td>
-            <td><?=$evenement['duretotale_evenement'];?></td>
-            <td><?=$evenement['description_evenement'];?></td>
-            <td><?=$evenement['categorie_evenement'];?></td>
-            <td><?=$evenement['prix_evenement'];?></td>
-            <td align="center">
+    <?php
+foreach($list as $evenement){
+    ?>
+    <tr>
+        <td><?=$evenement['id_evenement'];?></td>
+        <td><?=$evenement['titre_evenement'];?></td>
+        <td><?=$evenement['duretotale_evenement'];?></td>
+        <td><?=$evenement['description_evenement'];?></td>
+        <td>
+        <?php 
+            // Afficher le nom de la catégorie en utilisant la méthode getCategorieNameById
+            echo $categorieC->getCategorieNameById($evenement['idCategorie']);
+            ?>
+        </td>
+        <td><?=$evenement['prix_evenement'];?></td>
+        <td align="center">
+            <a href="Update_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-pen-to-square fa-xl"></i>Update</a>
+            <a href="Delete_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-trash fa-xl"></i>Delete</a>
+        </td>
+    </tr>
+    <?php 
+}
+?>
 
-                <a href="Update_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-pen-to-square fa-xl"></i>Update</a>
-                <a href="Delete_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-trash fa-xl"></i>Delete</a>
-
-            </td>
-        </tr>
-        <?php
-        }
-        ?>
     </tbody>
                   
       
     </div>
   </main>
+  
   
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">

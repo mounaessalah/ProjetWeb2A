@@ -1,0 +1,19 @@
+.error-message {
+    visibility: hidden;
+    
+}
+  
+.valid-message {
+    visibility: hidden;
+    
+}
+  
+.error-message.show {
+    visibility: visible;
+   
+}
+  
+.valid-message.show {
+    visibility: visible;
+    
+}

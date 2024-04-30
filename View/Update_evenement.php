@@ -2,6 +2,7 @@
 include '../Controller/evenementC.php';
 $evenementC = new evenementC();
 
+
 $error = "";
 
 $evenement = null;
@@ -207,7 +208,7 @@ if (
                         </div>
                         <div class="col">
                             <label class="form-label">Durée Totale</label>
-                            <input type="text" class="form-control" name="duretotale_evenement" placeholder="Durée Totale" value="<?php echo $evenement['duretotale_evenement']; ?>">
+                            <input type="time" class="form-control" name="duretotale_evenement" placeholder="Durée Totale" value="<?php echo $evenement['duretotale_evenement']; ?>">
                         </div>
                     </div>
 
@@ -218,15 +219,22 @@ if (
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                    <div class="col">
-                        <label class="form-label">Catégorie</label>
-                                    <select class="form-select" name="categorie_evenement">
-                                    <option value="workshop" <?php if ($evenement['categorie_evenement'] == 'workshop') echo 'selected'; ?>>workshop</option>
-                                    <option value="conference" <?php if ($evenement['categorie_evenement'] == 'conference') echo 'selected'; ?>>conference</option>
-                                    <option value="Atelier" <?php if ($evenement['categorie_evenement'] == 'atelier') echo 'selected'; ?>>Atelier</option>
-                                    </select>
-                    </div>
+                       <div class="row mb-3">
+        <div class="col">
+            <label class="form-label">Catégorie</label>
+            <select class="form-select" name="categorie_evenement">
+                           
+    <?php foreach ($categories as $categorie): ?>
+
+        <option value="<?php echo $categorie['idCategorie']; ?>">
+            <?php echo $categorie['nom']; ?>
+        </option>
+
+    <?php endforeach; ?>
+
+     </select>    
+         
+</div>
                     <div class="col">
                         <label class="form-label">Prix</label>
                             <input type="text" class="form-control" name="prix_evenement" placeholder="Prix" value="<?php echo $evenement['prix_evenement']; ?>">

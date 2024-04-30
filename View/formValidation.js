@@ -7,41 +7,43 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function validateForm() {
-        let errors = [];
-
         const titre = form.elements["titre"].value.trim();
         const description = form.elements["description"].value.trim();
-        const duree = form.elements["duree"].value.trim();
-        const prix = form.elements["prix"].value.trim();
+        
+        const errorTitre = document.getElementById("error-titre");
+        const validTitre = document.getElementById("valid-titre");
+        const errorDescription = document.getElementById("error-description");
+        const validDescription = document.getElementById("valid-description");
 
         if (titre === "") {
-            errors.push("Le champ Titre ne peut pas être vide.");
+            errorTitre.textContent = "Le champ Titre ne peut pas être vide.";
+            errorTitre.style.visibility = "visible";
+            validTitre.style.visibility = "hidden";
+        } else if (containsSymbol(titre)) {
+            errorTitre.textContent = "Le champ Titre ne peut pas contenir de symboles.";
+            errorTitre.style.visibility = "visible";
+            validTitre.style.visibility = "hidden";
+        } else {
+            errorTitre.style.visibility = "hidden";
+            validTitre.style.visibility = "visible";
         }
 
         if (description === "") {
-            errors.push("Le champ Description ne peut pas être vide.");
-        }
-
-        if (duree === "") {
-            errors.push("Le champ Durée ne peut pas être vide.");
-        }
-
-        if (prix === "") {
-            errors.push("Le champ Prix ne peut pas être vide.");
-        } else if (isNaN(prix)) {
-            errors.push("Le champ Prix doit être un nombre.");
-        }
-
-        if (errors.length > 0) {
-            const errorMessage = errors.join("<br>");
-            displayError(errorMessage);
+            errorDescription.textContent = "Le champ Description ne peut pas être vide.";
+            errorDescription.style.visibility = "visible";
+            validDescription.style.visibility = "hidden";
+        } else if (containsSymbol(description)) {
+            errorDescription.textContent = "Le champ Description ne peut pas contenir des symboles.";
+            errorDescription.style.visibility = "visible";
+            validDescription.style.visibility = "hidden";
         } else {
-            form.submit();
+            errorDescription.style.visibility = "hidden";
+            validDescription.style.visibility = "visible";
         }
     }
 
-    function displayError(message) {
-        const errorDiv = document.getElementById("error");
-        errorDiv.innerHTML = `<div class="alert alert-danger">${message}</div>`;
+    function containsSymbol(text) {
+        const symbolRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+        return symbolRegex.test(text);
     }
 });
