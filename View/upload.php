@@ -18,14 +18,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   error_log("Formulaire soumis");
     if (
       isset($_POST["titre"]) &&
-    isset($_POST["duree"]) &&
+      isset($_POST["date_debut"]) &&
+    isset($_POST["heure_debut"]) &&
+    isset($_POST["heure_fin"]) &&
     isset($_POST["description"]) &&
     isset($_POST["prix"])&&
     isset($_POST["idCategorie"])
     ) {
         if (
           !empty($_POST['titre']) &&
-        !empty($_POST["duree"]) &&
+          !empty($_POST["date_debut"]) &&
+        !empty($_POST["heure_debut"]) &&
+        !empty($_POST["heure_fin"]) &&
         !empty($_POST["description"]) &&
         !empty($_POST["prix"])&&
         !empty($_POST["idCategorie"]) 
@@ -36,7 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $evenement = new evenement(
             null,
             $_POST["titre"],
-            $_POST["duree"],
+            $_POST["date_debut"],
+            $_POST["heure_debut"],
+            $_POST["heure_fin"],
             $_POST["description"],
             $_POST["prix"],
             $_POST["idCategorie"] // Passer l'ID de la catégorie
@@ -209,16 +215,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     <div class="row mb-3">
         <div class="col">
+            <label id='titreLabel' class="form-label">date debut</label>
+            <input type="date" class="form-control" name="date_debut" id="titre" placeholder="date_debut">
+            
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <label class="form-label">heure debut</label>
+            <input type="time" class="form-control" name="heure_debut" placeholder="heure_debut">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <label class="form-label">heure fin</label>
+            <input type="time" class="form-control" name="heure_fin" placeholder="heure_fin">
+        </div>
+    <div class="row mb-3">
+        <div class="col">
             <label class="form-label">Description</label>
             <input type="text" class="form-control" name="description" id="description" placeholder="evenement Description">
             <span id="error-description" class="error-message" style="visibility: hidden;">Le champ Description ne peut pas être vide.</span>
             <span id="valid-description" class="valid-message" style="visibility: hidden;">Description valide</span>
         </div>
-        <div class="row mb-3">
-        <div class="col">
-            <label class="form-label">Durée</label>
-            <input type="time" class="form-control" name="duree" placeholder="evenement Durée">
-        </div>
+        
     </div>
     <div class="col">
     <label class="form-label">Catégorie</label>

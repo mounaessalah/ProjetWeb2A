@@ -11,6 +11,7 @@ $categorieC = new CategorieC();
 // Appelez la méthode listCategories pour récupérer toutes les catégories
 $listeCategories = $categorieC->listCategories();
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -176,24 +177,32 @@ $listeCategories = $categorieC->listCategories();
                   <tr>
             <th>#</th>
             <th>Titre</th>
-            <th>Durée</th>
+            <th>date debut</th>
+            <th>heure debut</th>
+            <th>heure fin</th>
             <th>Description</th>
             <th>Catégorie</th>
             <th>Prix</th>
             <th>Actions</th>
+            <th>date</th>
+            
         </tr>
 
                   </thead>
                   </thead>
     <tbody>
+    
     <?php
 foreach($list as $evenement){
     ?>
     <tr>
         <td><?=$evenement['id_evenement'];?></td>
         <td><?=$evenement['titre_evenement'];?></td>
-        <td><?=$evenement['duretotale_evenement'];?></td>
+        <td><?=$evenement['date_debut'];?></td>
+        <td><?=$evenement['heure_debut'];?></td>
+        <td><?=$evenement['heure_fin'];?></td>
         <td><?=$evenement['description_evenement'];?></td>
+        
         <td>
         <?php 
             // Afficher le nom de la catégorie en utilisant la méthode getCategorieNameById
@@ -201,10 +210,16 @@ foreach($list as $evenement){
             ?>
         </td>
         <td><?=$evenement['prix_evenement'];?></td>
+        
         <td align="center">
             <a href="Update_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-pen-to-square fa-xl"></i>Update</a>
             <a href="Delete_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-trash fa-xl"></i>Delete</a>
         </td>
+        <td>
+
+        <td><?=$evenement['date_ajout'];?></td>
+        </td>
+        
     </tr>
     <?php 
 }

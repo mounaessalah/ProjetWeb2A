@@ -15,7 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (
         isset($_POST["id"]) &&
         isset($_POST["titre_evenement"]) &&
-        isset($_POST["duretotale_evenement"]) &&
+        isset($_POST["date_debut"]) &&
+        isset($_POST["heure_debut"]) &&
+        isset($_POST["heure_fin"]) &&
         isset($_POST["description_evenement"]) &&
         isset($_POST["idCategorie"]) &&
         isset($_POST["prix_evenement"])
@@ -31,8 +33,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST["titre_evenement"])) {
                 $evenement->setTitre_evenement($_POST["titre_evenement"]);
             }
-            if (!empty($_POST["duretotale_evenement"])) {
-                $evenement->setDuretotale_evenement($_POST["duretotale_evenement"]);
+            if (!empty($_POST["date_debut"])) {
+                $evenement->setDate_debut($_POST["date_debut"]);
+                
+            }
+            if (!empty($_POST["heure_debut"])) {
+                $evenement->setHeure_debut($_POST["heure_debut"]);
+                
+            }
+            if (!empty($_POST["heure_fin"])) {
+                $evenement->setheure_fin($_POST["heure_fin"]);
+                
             }
             if (!empty($_POST["description_evenement"])) {
                 $evenement->setDescription_evenement($_POST["description_evenement"]);
@@ -124,8 +135,16 @@ $categories = $categorieC->listCategories();
         <input type="text" class="form-control" id="titre_evenement" name="titre_evenement" value="<?php echo $evenement->getTitre_evenement(); ?>" placeholder="Titre">
     </div>
     <div class="mb-3">
-        <label for="duretotale_evenement" class="form-label">Durée Totale</label>
-        <input type="time" class="form-control" id="duretotale_evenement" name="duretotale_evenement" value="<?php echo $evenement->getDuretotale_evenement(); ?>" placeholder="Durée Totale">
+        <label for="heure_debut" class="form-label">date debut</label>
+        <input type="date" class="form-control" id="date_debut" name="date_debut" value="<?php echo $evenement->getDate_debut(); ?>" placeholder="date_debut">
+    </div>
+    <div class="mb-3">
+        <label for="heure_debut" class="form-label">heure debut</label>
+        <input type="time" class="form-control" id="heure_debut" name="heure_debut" value="<?php echo $evenement->getHeure_debut(); ?>" placeholder="heure_debut">
+    </div>
+    <div class="mb-3">
+        <label for="heure_debut" class="form-label">heure fin</label>
+        <input type="time" class="form-control" id="heure_fin" name="heure_fin" value="<?php echo $evenement->getheure_fin(); ?>" placeholder="heure_fin">
     </div>
     <div class="mb-3">
         <label for="description_evenement" class="form-label">Description</label>

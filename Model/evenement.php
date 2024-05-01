@@ -4,16 +4,20 @@ class evenement
 {
     private ?int $id_evenement;
     private ?string $titre_evenement = null;
-    private ?string $duretotale_evenement = null;
+    private ?string $date_debut = null;
+    private ?string $heure_debut = null;
+    private ?string $heure_fin = null;
     private ?string $description_evenement = null;
     private ?float $prix_evenement = null;
     private ?int $idCategorie;
 
-    public function __construct($id_evenement, $titre_evenement, $duretotale_evenement, $description_evenement, $prix_evenement, $idCategorie)
+    public function __construct($id_evenement, $titre_evenement, $date_debut, $heure_debut, $heure_fin, $description_evenement, $prix_evenement, $idCategorie)
     {
         $this->id_evenement = $id_evenement;
         $this->titre_evenement = $titre_evenement;
-        $this->duretotale_evenement = $duretotale_evenement;
+        $this->date_debut = $date_debut;
+        $this->heure_debut = $heure_debut;
+        $this->heure_fin = $heure_fin;
         $this->description_evenement = $description_evenement;
         $this->prix_evenement = $prix_evenement;
         $this->idCategorie = $idCategorie;
@@ -48,21 +52,21 @@ class evenement
     }
 
     /**
-     * Get the value of duretotale_evenement
+     * Get the value of heure_fin
      */
-    public function getDuretotale_evenement()
+    public function getheure_fin()
     {
-        return $this->duretotale_evenement;
+        return $this->heure_fin;
     }
 
     /**
-     * Set the value of duretotale_evenement
+     * Set the value of heure_fin
      *
      * @return  self
      */
-    public function setDuretotale_evenement($duretotale_evenement)
+    public function setheure_fin($heure_fin)
     {
-        $this->duretotale_evenement = $duretotale_evenement;
+        $this->heure_fin = $heure_fin;
 
         return $this;
     }
@@ -129,4 +133,44 @@ class evenement
 
                 return $this;
         }
+
+    /**
+     * Get the value of date_debut
+     */ 
+    public function getDate_debut()
+    {
+        return $this->date_debut;
+    }
+
+    /**
+     * Set the value of date_debut
+     *
+     * @return  self
+     */ 
+    public function setDate_debut($date_debut)
+    {
+        $this->date_debut = $date_debut;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of heure_debut
+     */ 
+    public function getHeure_debut()
+    {
+        return $this->heure_debut;
+    }
+
+    /**
+     * Set the value of heure_debut
+     *
+     * @return  self
+     */ 
+    public function setHeure_debut($heure_debut)
+    {
+        $this->heure_debut = $heure_debut;
+
+        return $this;
+    }
 }

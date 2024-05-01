@@ -113,7 +113,7 @@ https://templatemo.com/tm-569-edu-meeting
             <div class="row grid">
    
         <?php foreach ($list as $evenement) : ?>
-            <div class="col-lg-4 templatemo-item-col all <?php echo $evenement['categorie_evenement']; ?>">
+            <div class="col-lg-4 templatemo-item-col all <?php echo $evenement['idCategorie']; ?>">
                 <div class="meeting-item">
                     <div class="thumb">
                         <div class="prix">
@@ -124,20 +124,20 @@ https://templatemo.com/tm-569-edu-meeting
                     </div>
                     
                     <div class="down-content">
-                        <div class="heure_debut_evenement">
-                            <!-- L'heure totale de l'événement est omise car elle n'est pas utilisée dans le code original -->
-                        </div>
+                       
                         <p> <h4> catégories :</h4> </p>
-                        <a href="meeting-details.html"><h6><?php echo $evenement['categorie_evenement']; ?></h6></a>
+                        <a href="meeting-details.html"><h6><?php echo $evenement['idCategorie']; ?></h6></a>
                         <br>
 
-                        <p> <h4> titre :</h4> </p>
+                        <p> <h4> titre :</h4> 
                         <a href="meeting-details.html"><h6><?php echo $evenement['titre_evenement']; ?></h6></a>
+                        <p> <h4> date debut :</h4> </p>
+                        <a href="meeting-details.html"><h6><?php echo $evenement['date_debut']; ?></h6></a>
                         <p > <h4>description :</h4></p>
                         <p><h6><?php echo $evenement['description_evenement']; ?> </h6></p>
                         <br>
                         <p> <h4>durée totale :</h4></p>
-                        <p><h6> <?php echo $evenement['heure_debut_evenement']; ?> H </h6> </p>
+                        <p><h6> <?php echo $evenement['duretotale_evenement']; ?> H </h6> </p>
                         <br>
                         <button>s'inscrire</button>
 

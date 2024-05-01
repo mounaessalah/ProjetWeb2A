@@ -35,14 +35,16 @@ class EvenementC
     public function addEvenement($evenement)
     {
         $sql = "INSERT INTO evenement  
-        VALUES (:id_evenement, :titre_evenement, :duretotale_evenement, :description_evenement, :prix_evenement, :idCategorie)";
+        VALUES (:id_evenement, :titre_evenement, :date_debut, :heure_debut, :heure_fin, :description_evenement, :prix_evenement, NOW(), :idCategorie)";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
             $query->execute([
                 ':id_evenement' => $evenement->getId_evenement(),
                 ':titre_evenement' => $evenement->getTitre_evenement(),
-                ':duretotale_evenement' => $evenement->getDuretotale_evenement(),
+                'date_debut'=> $evenement->getDate_debut(),
+                ':heure_debut' => $evenement->getHeure_debut(),
+                ':heure_fin' => $evenement->getheure_fin(),
                 ':description_evenement' => $evenement->getDescription_evenement(),
                 ':prix_evenement' => $evenement->getPrix_evenement(),
                 ':idCategorie' => $evenement->getIdCategorie()
@@ -60,7 +62,9 @@ class EvenementC
                 INNER JOIN categorie c ON e.idCategorie = c.idCategorie
                 SET 
                     e.titre_evenement = :titre_evenement, 
-                    e.duretotale_evenement = :duretotale_evenement,
+                    e.date_debut = :date_debut, 
+                    e.heure_debut = :heure_debut, 
+                    e.heure_fin = :heure_fin,
                     e.description_evenement = :description_evenement,
                     e.prix_evenement = :prix_evenement,
                     e.idCategorie = :idCategorie
@@ -70,7 +74,9 @@ class EvenementC
             $query->execute([
                 ':id' => $id,
                 ':titre_evenement' => $evenement->getTitre_evenement(),
-                ':duretotale_evenement' => $evenement->getDuretotale_evenement(),
+                ':date_debut' => $evenement->getDate_debut(),
+                ':heure_debut' => $evenement->getHeure_debut(),
+                ':heure_fin' => $evenement->getheure_fin(),
                 ':description_evenement' => $evenement->getDescription_evenement(),
                 ':prix_evenement' => $evenement->getPrix_evenement(),
                 ':idCategorie' => $evenement->getIdCategorie()
@@ -99,7 +105,9 @@ class EvenementC
             return new evenement(
                 $evenement->id_evenement,
                 $evenement->titre_evenement,
-                $evenement->duretotale_evenement,
+                $evenement->date_debut,
+                $evenement->heure_debut,
+                $evenement->heure_fin,
                 $evenement->description_evenement,
                 $evenement->idCategorie,
                 $evenement->prix_evenement
