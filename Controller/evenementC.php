@@ -4,6 +4,7 @@ include '../Model/evenement.php';
 
 class EvenementC
 {
+
     public function listEvenements()
     {
         $sql = "SELECT * FROM evenement";
@@ -50,45 +51,79 @@ class EvenementC
             echo 'Error adding Evenement: ' . $e->getMessage(); // Ajout du message d'erreur
         }
     }
-
-    public function updateEvenement($evenement, $id)
+    function updateEvenement($evenement, $id)
     {
         try {
             $db = config::getConnexion();
             $query = $db->prepare(
-                'UPDATE evenement SET 
-                    titre_evenement = :titre, 
-                    duretotale_evenement = :duree, 
-                    description_evenement = :description,
-                    prix_evenement = :prix
-                WHERE id_evenement = :id'
+                'UPDATE evenement e
+                INNER JOIN categorie c ON e.idCategorie = c.idCategorie
+                SET 
+                    e.titre_evenement = :titre_evenement, 
+                    e.duretotale_evenement = :duretotale_evenement,
+                    e.description_evenement = :description_evenement,
+                    e.prix_evenement = :prix_evenement,
+                    e.idCategorie = :idCategorie
+                WHERE e.id_evenement = :id'
             );
+    
             $query->execute([
                 ':id' => $id,
-                ':titre' => $evenement->getTitre_evenement(),
-                ':duree' => $evenement->getDuretotale_evenement(),
-                ':description' => $evenement->getDescription_evenement(),
-                ':prix' => $evenement->getPrix_evenement()
+                ':titre_evenement' => $evenement->getTitre_evenement(),
+                ':duretotale_evenement' => $evenement->getDuretotale_evenement(),
+                ':description_evenement' => $evenement->getDescription_evenement(),
+                ':prix_evenement' => $evenement->getPrix_evenement(),
+                ':idCategorie' => $evenement->getIdCategorie()
             ]);
+    
             echo $query->rowCount() . " records UPDATED successfully <br>";
         } catch (PDOException $e) {
-            echo 'Error updating Evenement: ' . $e->getMessage(); // Ajout du message d'erreur
+            echo $e->getMessage();
         }
     }
-
+    
+  
     public function showevenement($id)
+{
+    $sql = "SELECT * from evenement where id_evenement = $id";
+    $db = config::getConnexion();
+    try {
+        $query = $db->prepare($sql);
+        $query->execute();
+
+        // Fetch l'événement en tant qu'objet
+        $evenement = $query->fetch(PDO::FETCH_OBJ);
+        
+        // Si un événement est trouvé, retournez-le, sinon retournez null
+        if ($evenement) {
+            return new evenement(
+                $evenement->id_evenement,
+                $evenement->titre_evenement,
+                $evenement->duretotale_evenement,
+                $evenement->description_evenement,
+                $evenement->idCategorie,
+                $evenement->prix_evenement
+            );
+        } else {
+            return null;
+        }
+    } catch (Exception $e) {
+        die('Error: ' . $e->getMessage());
+    }
+}
+
+    
+public function getIdCategorie()
     {
-        $sql = "SELECT * from evenement where id_evenement = $id";
+        // Logique pour récupérer les données des catégories depuis la base de données
+        $sql = "SELECT idCategorie, nom FROM categorie";
         $db = config::getConnexion();
         try {
-            $query = $db->prepare($sql);
-            $query->execute();
-
-            $evenement = $query->fetch();
-            return $evenement;
+            $stmt = $db->query($sql);
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
         } catch (Exception $e) {
-            die('Error: ' . $e->getMessage());
+            die('Error:' . $e->getMessage());
         }
     }
-
 }
