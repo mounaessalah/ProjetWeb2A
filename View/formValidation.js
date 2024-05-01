@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("insertForm");
-
     form.addEventListener("submit", function (event) {
         event.preventDefault();
         validateForm();
@@ -9,11 +8,14 @@ document.addEventListener("DOMContentLoaded", function () {
     function validateForm() {
         const titre = form.elements["titre"].value.trim();
         const description = form.elements["description"].value.trim();
+        const categorie = form.elements["categorie_evenement"].value;
         
         const errorTitre = document.getElementById("error-titre");
         const validTitre = document.getElementById("valid-titre");
         const errorDescription = document.getElementById("error-description");
         const validDescription = document.getElementById("valid-description");
+        const errorCategorie = document.getElementById("error-categorie");
+        const validCategorie = document.getElementById("valid-categorie");
 
         if (titre === "") {
             errorTitre.textContent = "Le champ Titre ne peut pas être vide.";
@@ -40,6 +42,15 @@ document.addEventListener("DOMContentLoaded", function () {
             errorDescription.style.visibility = "hidden";
             validDescription.style.visibility = "visible";
         }
+        if (categorie === "") {
+            errorCategorie.textContent = "Veuillez sélectionner une catégorie.";
+            errorCategorie.style.visibility = "visible";
+            validCategorie.style.visibility = "hidden";
+        } else {
+            errorCategorie.style.visibility = "hidden";
+            validCategorie.style.visibility = "visible";
+        }
+        
     }
 
     function containsSymbol(text) {

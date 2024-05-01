@@ -124,7 +124,7 @@ https://templatemo.com/tm-569-edu-meeting
                     </div>
                     
                     <div class="down-content">
-                        <div class="duretotale_evenement">
+                        <div class="heure_debut_evenement">
                             <!-- L'heure totale de l'événement est omise car elle n'est pas utilisée dans le code original -->
                         </div>
                         <p> <h4> catégories :</h4> </p>
@@ -137,7 +137,7 @@ https://templatemo.com/tm-569-edu-meeting
                         <p><h6><?php echo $evenement['description_evenement']; ?> </h6></p>
                         <br>
                         <p> <h4>durée totale :</h4></p>
-                        <p><h6> <?php echo $evenement['duretotale_evenement']; ?> H </h6> </p>
+                        <p><h6> <?php echo $evenement['heure_debut_evenement']; ?> H </h6> </p>
                         <br>
                         <button>s'inscrire</button>
 

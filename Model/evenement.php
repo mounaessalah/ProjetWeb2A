@@ -7,19 +7,17 @@ class evenement
     private ?string $duretotale_evenement = null;
     private ?string $description_evenement = null;
     private ?float $prix_evenement = null;
-    private ?int $idCategorie ;
+    private ?int $idCategorie;
 
-
-  
     public function __construct($id_evenement, $titre_evenement, $duretotale_evenement, $description_evenement, $prix_evenement, $idCategorie)
-{
-    $this->id_evenement = $id_evenement;
-    $this->titre_evenement = $titre_evenement;
-    $this->duretotale_evenement = $duretotale_evenement;
-    $this->description_evenement = $description_evenement;
-    $this->prix_evenement = $prix_evenement;
-    $this->idCategorie = $idCategorie; 
-}
+    {
+        $this->id_evenement = $id_evenement;
+        $this->titre_evenement = $titre_evenement;
+        $this->duretotale_evenement = $duretotale_evenement;
+        $this->description_evenement = $description_evenement;
+        $this->prix_evenement = $prix_evenement;
+        $this->idCategorie = $idCategorie;
+    }
 
     /**
      * Get the value of id_evenement

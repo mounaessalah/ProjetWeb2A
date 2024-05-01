@@ -108,7 +108,7 @@ $listeCategories = $categorieC->listCategories();
                 </g>
               </svg>
             </div>
-            <span class="nav-link-text ms-1">formation</span>
+            <span class="nav-link-text ms-1">EVENEMENT</span>
           </a>
         </li>
         

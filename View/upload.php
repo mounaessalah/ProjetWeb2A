@@ -1,6 +1,7 @@
 <?php
 require_once '../Controller/evenementC.php';
 require_once '../Controller/categorieC.php';
+
 $evenementC = new evenementC();
 $categorieC = new categorieC();
 
@@ -12,49 +13,48 @@ $evenement = null;
   $categories = $categorieC->listCategories();
 
 
-if (
-    isset($_POST["titre"]) &&
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  error_log("Formulaire soumis");
+    if (
+      isset($_POST["titre"]) &&
     isset($_POST["duree"]) &&
     isset($_POST["description"]) &&
     isset($_POST["prix"])&&
-    isset($_POST["categorie_evenement"]) 
-    
-) {
-    if (
-        !empty($_POST['titre']) &&
+    isset($_POST["idCategorie"])
+    ) {
+        if (
+          !empty($_POST['titre']) &&
         !empty($_POST["duree"]) &&
         !empty($_POST["description"]) &&
         !empty($_POST["prix"])&&
         !empty($_POST["idCategorie"]) 
-        
-    ) {
-        // Créer un nouvel objet evenement avec les données du formulaire
-        $evenement = new evenement(
+        ) {
+          
+            $categorie = new Categorie($_POST["idCategorie"], $_POST["nom"]);
+
+            $evenement = new evenement(
             null,
             $_POST["titre"],
             $_POST["duree"],
             $_POST["description"],
             $_POST["prix"],
-            $_POST["idCategorie"]  // Passer l'ID de la catégorie
-            
+            $_POST["idCategorie"] // Passer l'ID de la catégorie
         );
-        
-        $result = $evenementC->addevenement($evenement);
+           
 
-        if ($result) {
-            header('Location: Listevenement.php');
-            exit();
-        } else {
-            $error = "Erreur lors de l'ajout de l'événement à la base de données.";
-        }
-    } else {
-        $error = "Veuillez remplir tous les champs du formulaire.";
-    }
+
+        $evenementC->addevenement($evenement);
+        header('Location: listevenement.php');
+      } else {
+          $error = "Missing information";
+      }
+  }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-    
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -198,8 +198,8 @@ if (
         </div>
       </div>
     </nav>
-    <form method="POST" id="insertForm" action="upload.php" enctype="multipart/form-data">
-    <div class="row mb-3">
+  <form method="POST" action="upload.php" enctype="multipart/form-data">
+  <div class="row mb-3">
         <div class="col">
             <label id='titreLabel' class="form-label">Titre</label>
             <input type="text" class="form-control" name="titre" id="titre" placeholder="evenement Titre">
@@ -220,32 +220,27 @@ if (
             <input type="time" class="form-control" name="duree" placeholder="evenement Durée">
         </div>
     </div>
-        <div class="col">
-            <label class="form-label">Catégorie</label>
-            <select class="form-select" name="idCategorie">
-                           
-    <?php foreach ($categories as $categorie): ?>
-        <option value="<?php echo $categorie['idCategorie']; ?>">
-            <?php echo $categorie['nom']; ?>
-        </option>
-    <?php endforeach; ?>
+    <div class="col">
+    <label class="form-label">Catégorie</label>
+    <select class="form-select" name="idCategorie">
+        <?php foreach ($categories as $categorie) { ?>
+            <option value="<?php echo $categorie['idCategorie']; ?>"><?php echo $categorie['nom']; ?></option>
+        <?php } ?>
+    </select>
+    
+ </div>
 
-     </select>    
-         
-          </div>
-          <div class="col">
+ <div class="col">
             <label class="form-label">Prix</label>
             <input type="text" class="form-control" name="prix" placeholder="evenement Prix">
         </div>
           <script src="formValidation.js"></script>
           
-    </div>
-    
-    <div>
+          <div>
         <button type="submit" class="btn btn-outline-dark me-1" id="insertBtn">Submit</button>
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
     </div>
-   <!-- Affichage des messages d'erreur -->
    
-    </form>
-</form>
+  </form>
+</body>
+</html>

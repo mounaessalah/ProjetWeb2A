@@ -30,29 +30,26 @@ class EvenementC
             die('Error:' . $e->getMessage());
         }
     }
-    
+
     public function addEvenement($evenement)
     {
         $sql = "INSERT INTO evenement  
-                VALUES (:titre_evenement, :duretotale_evenement, :description_evenement, :prix_evenement, :idCategorie)";
+        VALUES (:id_evenement, :titre_evenement, :duretotale_evenement, :description_evenement, :prix_evenement, :idCategorie)";
         $db = config::getConnexion();
-        
         try {
             $query = $db->prepare($sql);
             $query->execute([
-                'titre_evenement' => $evenement->getTitre_evenement(),
-                'duretotale_evenement' => $evenement->getDuretotale_evenement(),
-                'description_evenement' => $evenement->getDescription_evenement(),
-                'prix_evenement' => $evenement->getPrix_evenement(),
-                'idCategorie' => $evenement->getIdCategorie()
-            ]);
-        } catch (Exception $e) 
-        {
-            echo 'Error: ' . $e->getMessage();
+                ':id_evenement' => $evenement->getId_evenement(),
+                ':titre_evenement' => $evenement->getTitre_evenement(),
+                ':duretotale_evenement' => $evenement->getDuretotale_evenement(),
+                ':description_evenement' => $evenement->getDescription_evenement(),
+                ':prix_evenement' => $evenement->getPrix_evenement(),
+                ':idCategorie' => $evenement->getIdCategorie()
+            ]); 
+        } catch (Exception $e) {
+            echo 'Error adding Evenement: ' . $e->getMessage(); // Ajout du message d'erreur
         }
     }
-
-    
 
     public function updateEvenement($evenement, $id)
     {
@@ -67,15 +64,15 @@ class EvenementC
                 WHERE id_evenement = :id'
             );
             $query->execute([
-                'id' => $id,
-                'titre' => $evenement->getTitre_evenement(),
-                'duree' => $evenement->getDuretotale_evenement(),
-                'description' => $evenement->getDescription_evenement(),
-                'prix' => $evenement->getPrix_evenement()
+                ':id' => $id,
+                ':titre' => $evenement->getTitre_evenement(),
+                ':duree' => $evenement->getDuretotale_evenement(),
+                ':description' => $evenement->getDescription_evenement(),
+                ':prix' => $evenement->getPrix_evenement()
             ]);
             echo $query->rowCount() . " records UPDATED successfully <br>";
         } catch (PDOException $e) {
-            $e->getMessage();
+            echo 'Error updating Evenement: ' . $e->getMessage(); // Ajout du message d'erreur
         }
     }
 

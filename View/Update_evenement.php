@@ -2,7 +2,6 @@
 include '../Controller/evenementC.php';
 $evenementC = new evenementC();
 
-
 $error = "";
 
 $evenement = null;
@@ -225,11 +224,9 @@ if (
             <select class="form-select" name="categorie_evenement">
                            
     <?php foreach ($categories as $categorie): ?>
-
         <option value="<?php echo $categorie['idCategorie']; ?>">
             <?php echo $categorie['nom']; ?>
         </option>
-
     <?php endforeach; ?>
 
      </select>    
