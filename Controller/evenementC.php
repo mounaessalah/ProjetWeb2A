@@ -3,23 +3,69 @@ include '../config.php';
 include '../Model/evenement.php';
 
 class EvenementC
+{ public function getStatistics()
+    {
+        $sql = "SELECT c.nom as cat_name, COUNT(e.id_evenement) as evenement_count
+        FROM categorie c
+        LEFT JOIN evenement e ON c.idCategorie = e.idCategorie 
+        GROUP BY c.idCategorie";
+    
+        $db = config::getConnexion();
+    
+        try {
+            $query = $db->prepare($sql);
+            $query->execute();
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (Exception $e) {
+            throw new Exception('Error getting statistics: ' . $e->getMessage());
+        }
+    }
+    
+    
+    public function rechercherEvenements($recherche)
 {
-    // Méthode pour trier les événements par titre
-public function triParTitre()
-{
-    $sql = "SELECT * FROM evenement ORDER BY titre_evenement";
+    $sql = "SELECT * FROM evenement WHERE titre_evenement LIKE :recherche OR description_evenement LIKE :recherche";
     $db = config::getConnexion();
     try {
-        $stmt = $db->query($sql);
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $data;
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $resultats;
     } catch (PDOException $e) {
         die('Erreur de base de données: ' . $e->getMessage());
     }
 }
+    
+    public function listevenementsTriCategorie()
+    {
+        $sql = "SELECT * FROM evenement ORDER BY idCategorie";
+        $db = config::getConnexion();
+        try {
+            $stmt = $db->query($sql);
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        } catch (PDOException $e) {
+            die('Erreur de base de données: ' . $e->getMessage());
+        }
+    }
+    // Méthode pour trier les événements par titre
+    public function listevenementsTriTitre()
+    {
+        $sql = "SELECT * FROM evenement ORDER BY titre_evenement ASC"; // ASC pour trier par ordre croissant
+        $db = config::getConnexion();
+        try {
+            $stmt = $db->query($sql);
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        } catch (PDOException $e) {
+            die('Erreur de base de données: ' . $e->getMessage());
+        }
+    }
 
 // Méthode pour trier les événements par date
-public function triParDate()
+public function listevenementsTriDate()
 {
     $sql = "SELECT * FROM evenement ORDER BY date_debut";
     $db = config::getConnexion();

@@ -2,29 +2,18 @@
 include '../Controller/evenementC.php';
 include '../Controller/categorieC.php';
 
-
-$evenementC = new evenementC();
-$error = "";
-$list = $evenementC->listevenements();
-// Créez une instance de la classe CategorieC
+$evenementC = new EvenementC();
 $categorieC = new CategorieC();
 
-// Appelez la méthode listCategories pour récupérer toutes les catégories
-$listeCategories = $categorieC->listCategories();
-if (isset($_POST['tri_date'])) {
-  // Si le bouton de tri par date est cliqué
-  $evenements = $evenementC->listevenementsTriDate();
-} elseif (isset($_POST['tri_titre'])) {
-  // Si le bouton de tri par titre est cliqué
-  $evenements = $evenementC->listevenementsTriTitre();
-} else {
-  // Par défaut, afficher tous les événements non triés
-  $evenements = $evenementC->listEvenements();
+$c = new evenementC();
+$categorie = new categorieC();
+$statistics = $c->getStatistics();
+
+// Calculate total evenements
+$totalevenements = 0;
+foreach ($statistics as $stat) {
+    $totalevenements += $stat['evenement_count'];
 }
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,27 +21,99 @@ if (isset($_POST['tri_date'])) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  
-  <title>
-    education et formation
-  </title>
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  <!-- Nucleo Icons -->
-  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+  <title>Education et Formation</title>
+  <!-- Fonts and icons -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
-  <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
-  <!-- Nepcha Analytics (nepcha.com) -->
-  <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
-  <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
-</head>
+  <link href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet">
+  <style>
+    /* Ajouter des styles personnalisés ici */
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f8f9fe;
+    }
 
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .statistics-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .statistics-table {
+      flex: 1;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .statistics-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .statistics-table th,
+    .statistics-table td {
+      padding: 10px 15px;
+      text-align: left;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .statistics-table th {
+      background-color: #f8f9fe;
+      font-weight: bold;
+    }
+
+    .chart-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .chart {
+      position: relative;
+      width: 150px;
+      height: 150px;
+    }
+
+    .chart span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .chart svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .progress-ring__circle {
+      fill: none;
+      stroke-width: 5;
+      stroke-linecap: round;
+      animation: progress 1s ease-out forwards;
+    }
+
+    @keyframes progress {
+      from {
+        stroke-dasharray: 0 100;
+      }
+    }
+  </style>
+</head>
 <body class="g-sidenav-show  bg-gray-100">
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
@@ -143,9 +204,9 @@ if (isset($_POST['tri_date'])) {
         
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-            
               <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="upload.php">ajouter un  evenement</a>
               <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="uploadcategorie.php">ajouter une  categorie</a>
+              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="listevenement.php">retourner</a>
             </li>
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
@@ -178,134 +239,67 @@ if (isset($_POST['tri_date'])) {
       </div>
     </nav>
     <!-- End Navbar -->
+  <!-- Sidebar -->
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3" id="sidenav-main">
+    <!-- Sidebar content -->
+  </aside>
+  <!-- Main content -->
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <!-- Content header -->
     <div class="container-fluid py-4">
       <div class="row">
-        <div class="col-12">
-          <div class="card mb-4">
+        <div class="col-lg-6 mb-4">
+          <div class="card">
             <div class="card-header pb-0">
-              <h6>table des evenements</h6><form method="post" action="tri.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="tri_date" value="1">Trier par Date</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_titre" value="1">Trier par Titre</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_titre" value="1">Trier par categorie</button></form>
-<form method="get" action="recherche.php">
-    <input  class="btn btn-outline-primary btn-sm mb-0 me-3" type="text" name="q" placeholder="Rechercher...">
-    <button class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" action="recherche.php">Rechercher</button>
-    
-</form>
-<form action="statistique.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="stat" value="1">statistique</button></form>
+              <h6 class="mb-0">Evenement Statistics</h6>
             </div>
-            
             <div class="card-body px-0 pt-0 pb-2">
-              <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                  <tr>
-            <th>#</th>
-            <th>Titre</th>
-            <th>date debut</th>
-            <th>heure debut</th>
-            <th>date fin</th>
-            <th>heure fin</th>
-            <th>Description</th>
-            <th>Catégorie</th>
-            <th>Prix</th>
-            <th>Actions</th>
-            <th>date system</th>
-            
-        </tr>
-
-                  </thead>
-                  </thead>
-    <tbody>
-    
-    <?php
-foreach($list as $evenement){
-    ?>
-    <tr>
-        <td><?=$evenement['id_evenement'];?></td>
-        <td><?=$evenement['titre_evenement'];?></td>
-        <td><?=$evenement['date_debut'];?></td>
-        <td><?=$evenement['heure_debut'];?></td>
-        <td><?=$evenement['date_fin'];?></td>
-        <td><?=$evenement['heure_fin'];?></td>
-        <td><?=$evenement['description_evenement'];?></td>
-        
-        <td>
-        <?php 
-            // Afficher le nom de la catégorie en utilisant la méthode getCategorieNameById
-            echo $categorieC->getCategorieNameById($evenement['idCategorie']);
-            ?>
-        </td>
-        <td><?=$evenement['prix_evenement'];?></td>
-        
-        <td align="center">
-            <a href="Update_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-pen-to-square fa-xl"></i>mise a jour</a>
-            <a href="Delete_evenement.php?id=<?=$evenement['id_evenement'];?>" onclick="return confirm('Are you sure you want to delete this event?')" class="btn"><i class="fa-solid fa-trash fa-xl"></i>supression</a>
-        </td>
-        <td>
-
-        <td><?=$evenement['date_ajout'];?></td>
-        </td>
-        
-    </tr>
-    <?php 
-}
-?>
-            
-</table>
-
-    
-    <script>
-    // Function to display a confirmation popup before deleting an event
-    function confirmDelete() {
-      return confirm('Are you sure you want to delete this event?');
-    }
-    </script>
-   
-    
-
-    </tbody>
+              <div class="statistics-container">
+                <div class="statistics-table">
+                  <p class="btn btn-outline-primary btn-sm mb-3">Total Evenements: <?= $totalevenements; ?></p>
+                  <h2 class="btn btn-outline-primary btn-sm mb-3">Categorie Statistics</h2>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Nom de la catégorie</th>
+                        <th>Evenements</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php foreach ($statistics as $stat) : ?>
+                        <tr>
+                          <td><?= $stat['cat_name']; ?></td>
+                          <td><?= $stat['evenement_count']; ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    </tbody>
                   
-      
+                </div>
+                <div class="chart-container">
+    <?php foreach ($statistics as $stat) : ?>
+        <?php
+        $percentage = ($totalevenements > 0) ? round(($stat['evenement_count'] / $totalevenements) * 100) : 0;
+        ?>
+        <div class="chart">
+            <svg class="progress-ring" width="120" height="120">
+                <circle class="progress-ring__circle" stroke="#ff0000" cx="60" cy="60" r="54" stroke-dasharray="<?= round(2 * pi() * 54 * $percentage / 100) ?>, 100" transform="rotate(-90,60,60)" />
+                <text x="50%" y="50%" text-anchor="middle" fill="#333" font-size="24"><?= $percentage; ?>%</text>
+            </svg>
+        </div>
+    <?php endforeach; ?>
+</div>
+              </div>
+            </div>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
-  
-  
-  <div class="fixed-plugin">
-    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
-      <i class="fa fa-cog py-2"> </i>
-    </a>
-    <div class="card shadow-lg ">
-      <div class="card-header pb-0 pt-3 ">
-        <div class="float-start">
-          <h5 class="mt-3 mb-0">Soft UI Configurator</h5>
-          <p>See our dashboard options.</p>
-        </div>
-        <div class="float-end mt-4">
-          <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
-            <i class="fa fa-close"></i>
-          </button>
-        </div>
-        <!-- End Toggle Button -->
-      </div>
-      <hr class="horizontal dark my-1">
-      <div class="card-body pt-sm-3 pt-0">
-        <!-- Sidebar Backgrounds -->
-        <div>
-          <h6 class="mb-0">Sidebar Colors</h6>
-        </div>
-        <a href="javascript:void(0)" class="switch-trigger background-color">
-          <div class="badge-colors my-2 text-start">
-            <span class="badge filter bg-gradient-primary active" data-color="primary" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-dark" data-color="dark" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-info" data-color="info" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-success" data-color="success" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-warning" data-color="warning" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-danger" data-color="danger" onclick="sidebarColor(this)"></span>
-          </div>
-        </a>
-       
-  
-  
+  <!-- Scripts -->
+  <script>
+    // Ajouter des scripts personnalisés ici
+  </script>
 </body>
-
- 
 
 </html>

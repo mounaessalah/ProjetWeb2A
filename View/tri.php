@@ -17,6 +17,9 @@ if (isset($_POST['tri_date'])) {
 } elseif (isset($_POST['tri_titre'])) {
   // Si le bouton de tri par titre est cliqué
   $evenements = $evenementC->listevenementsTriTitre();
+}elseif (isset($_POST['tri_categorie'])) {
+  // Si le bouton de tri par categorie est cliqué
+  $evenements = $evenementC->listevenementsTriCategorie();
 } else {
   // Par défaut, afficher tous les événements non triés
   $evenements = $evenementC->listEvenements();
@@ -143,9 +146,9 @@ if (isset($_POST['tri_date'])) {
         
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-            
               <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="upload.php">ajouter un  evenement</a>
               <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="uploadcategorie.php">ajouter une  categorie</a>
+              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="listevenement.php">retourner</a>
             </li>
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
@@ -183,13 +186,7 @@ if (isset($_POST['tri_date'])) {
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>table des evenements</h6><form method="post" action="tri.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="tri_date" value="1">Trier par Date</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_titre" value="1">Trier par Titre</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_titre" value="1">Trier par categorie</button></form>
-<form method="get" action="recherche.php">
-    <input  class="btn btn-outline-primary btn-sm mb-0 me-3" type="text" name="q" placeholder="Rechercher...">
-    <button class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" action="recherche.php">Rechercher</button>
-    
-</form>
-<form action="statistique.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="stat" value="1">statistique</button></form>
+              <h6>table des evenements</h6><form method="post" action="tri.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="tri_date" value="1">Trier par Date</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_titre" value="1">Trier par Titre</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_categorie" value="1">Trier par categorie</button>
             </div>
             
             <div class="card-body px-0 pt-0 pb-2">
@@ -216,7 +213,7 @@ if (isset($_POST['tri_date'])) {
     <tbody>
     
     <?php
-foreach($list as $evenement){
+foreach($evenements as $evenement){
     ?>
     <tr>
         <td><?=$evenement['id_evenement'];?></td>
@@ -250,7 +247,6 @@ foreach($list as $evenement){
 ?>
             
 </table>
-
     
     <script>
     // Function to display a confirmation popup before deleting an event

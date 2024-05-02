@@ -129,15 +129,19 @@ https://templatemo.com/tm-569-edu-meeting
                         <a href="meeting-details.html"><h6><?php echo $evenement['idCategorie']; ?></h6></a>
                         <br>
 
-                        <p> <h4> titre :</h4> 
-                        <a href="meeting-details.html"><h6><?php echo $evenement['titre_evenement']; ?></h6></a>
-                        <p> <h4> date debut :</h4> </p>
-                        <a href="meeting-details.html"><h6><?php echo $evenement['date_debut']; ?></h6></a>
-                        <p > <h4>description :</h4></p>
-                        <p><h6><?php echo $evenement['description_evenement']; ?> </h6></p>
+                        <p><h4> titre :</h4> <h4><?php echo $evenement['titre_evenement']; ?></h4></p>
+                       
+                         <h4> date debut :</h4> <h4><?php echo $evenement['date_debut']; ?></h4>
+                       
+                        <h4>heure debut :</h4> <h4><?php echo $evenement['heure_debut']; ?> </h4>
                         <br>
-                        <p> <h4>durée totale :</h4></p>
-                        <p><h6> <?php echo $evenement['duretotale_evenement']; ?> H </h6> </p>
+                         <h4>date fin :</h4>  <h4> <?php echo $evenement['date_fin']; ?> </h4>
+                         
+                      
+                        <br>
+                        <h4>heure fin :</h4>  <h4> <?php echo $evenement['heure_fin']; ?> </h4>
+                        <br>
+                        <h4>description :</h4>  <h4> <?php echo $evenement['description_evenement']; ?> </h4>
                         <br>
                         <button>s'inscrire</button>
 

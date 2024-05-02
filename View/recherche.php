@@ -1,31 +1,20 @@
 <?php
+
 include '../Controller/evenementC.php';
 include '../Controller/categorieC.php';
 
 
-$evenementC = new evenementC();
-$error = "";
-$list = $evenementC->listevenements();
-// Créez une instance de la classe CategorieC
+$evenementC = new EvenementC();
 $categorieC = new CategorieC();
 
-// Appelez la méthode listCategories pour récupérer toutes les catégories
-$listeCategories = $categorieC->listCategories();
-if (isset($_POST['tri_date'])) {
-  // Si le bouton de tri par date est cliqué
-  $evenements = $evenementC->listevenementsTriDate();
-} elseif (isset($_POST['tri_titre'])) {
-  // Si le bouton de tri par titre est cliqué
-  $evenements = $evenementC->listevenementsTriTitre();
+if (isset($_GET['q'])) {
+    $recherche = $_GET['q'];
+    $evenements = $evenementC->rechercherEvenements($recherche);
 } else {
-  // Par défaut, afficher tous les événements non triés
-  $evenements = $evenementC->listEvenements();
+    $evenements = $evenementC->listEvenements();
 }
-
-
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +41,6 @@ if (isset($_POST['tri_date'])) {
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
 </head>
-
 <body class="g-sidenav-show  bg-gray-100">
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
@@ -143,9 +131,9 @@ if (isset($_POST['tri_date'])) {
         
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-            
               <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="upload.php">ajouter un  evenement</a>
               <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="uploadcategorie.php">ajouter une  categorie</a>
+              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="listevenement.php">retourner</a>
             </li>
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
@@ -178,134 +166,51 @@ if (isset($_POST['tri_date'])) {
       </div>
     </nav>
     <!-- End Navbar -->
+
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>table des evenements</h6><form method="post" action="tri.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="tri_date" value="1">Trier par Date</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_titre" value="1">Trier par Titre</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_titre" value="1">Trier par categorie</button></form>
-<form method="get" action="recherche.php">
-    <input  class="btn btn-outline-primary btn-sm mb-0 me-3" type="text" name="q" placeholder="Rechercher...">
-    <button class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" action="recherche.php">Rechercher</button>
-    
-</form>
-<form action="statistique.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="stat" value="1">statistique</button></form>
+              <h6>resultat</h6>
             </div>
             
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
-                  <thead>
-                  <tr>
-            <th>#</th>
-            <th>Titre</th>
-            <th>date debut</th>
-            <th>heure debut</th>
-            <th>date fin</th>
-            <th>heure fin</th>
-            <th>Description</th>
-            <th>Catégorie</th>
-            <th>Prix</th>
-            <th>Actions</th>
-            <th>date system</th>
-            
-        </tr>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Date de début</th>
+                <th>Heure de début</th>
+                <th>Date de fin</th>
+                <th>Heure de fin</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th>Prix</th>
+                <th>Date d'ajout</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($evenements as $evenement) : ?>
+                <tr>
+                    <td><?= $evenement['id_evenement']; ?></td>
+                    <td><?= $evenement['titre_evenement']; ?></td>
+                    <td><?= $evenement['date_debut']; ?></td>
+                    <td><?= $evenement['heure_debut']; ?></td>
+                    <td><?= $evenement['date_fin']; ?></td>
+                    <td><?= $evenement['heure_fin']; ?></td>
+                    <td><?= $evenement['description_evenement']; ?></td>
+                    <td><?= $categorieC->getCategorieNameById($evenement['idCategorie']); ?></td>
+                    <td><?= $evenement['prix_evenement']; ?></td>
+                    <td><?= $evenement['date_ajout']; ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 
-                  </thead>
-                  </thead>
-    <tbody>
-    
-    <?php
-foreach($list as $evenement){
-    ?>
-    <tr>
-        <td><?=$evenement['id_evenement'];?></td>
-        <td><?=$evenement['titre_evenement'];?></td>
-        <td><?=$evenement['date_debut'];?></td>
-        <td><?=$evenement['heure_debut'];?></td>
-        <td><?=$evenement['date_fin'];?></td>
-        <td><?=$evenement['heure_fin'];?></td>
-        <td><?=$evenement['description_evenement'];?></td>
-        
-        <td>
-        <?php 
-            // Afficher le nom de la catégorie en utilisant la méthode getCategorieNameById
-            echo $categorieC->getCategorieNameById($evenement['idCategorie']);
-            ?>
-        </td>
-        <td><?=$evenement['prix_evenement'];?></td>
-        
-        <td align="center">
-            <a href="Update_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-pen-to-square fa-xl"></i>mise a jour</a>
-            <a href="Delete_evenement.php?id=<?=$evenement['id_evenement'];?>" onclick="return confirm('Are you sure you want to delete this event?')" class="btn"><i class="fa-solid fa-trash fa-xl"></i>supression</a>
-        </td>
-        <td>
-
-        <td><?=$evenement['date_ajout'];?></td>
-        </td>
-        
-    </tr>
-    <?php 
-}
-?>
-            
-</table>
-
-    
-    <script>
-    // Function to display a confirmation popup before deleting an event
-    function confirmDelete() {
-      return confirm('Are you sure you want to delete this event?');
-    }
-    </script>
-   
-    
-
-    </tbody>
-                  
-      
-    </div>
-  </main>
-  
-  
-  <div class="fixed-plugin">
-    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
-      <i class="fa fa-cog py-2"> </i>
-    </a>
-    <div class="card shadow-lg ">
-      <div class="card-header pb-0 pt-3 ">
-        <div class="float-start">
-          <h5 class="mt-3 mb-0">Soft UI Configurator</h5>
-          <p>See our dashboard options.</p>
-        </div>
-        <div class="float-end mt-4">
-          <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
-            <i class="fa fa-close"></i>
-          </button>
-        </div>
-        <!-- End Toggle Button -->
-      </div>
-      <hr class="horizontal dark my-1">
-      <div class="card-body pt-sm-3 pt-0">
-        <!-- Sidebar Backgrounds -->
-        <div>
-          <h6 class="mb-0">Sidebar Colors</h6>
-        </div>
-        <a href="javascript:void(0)" class="switch-trigger background-color">
-          <div class="badge-colors my-2 text-start">
-            <span class="badge filter bg-gradient-primary active" data-color="primary" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-dark" data-color="dark" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-info" data-color="info" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-success" data-color="success" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-warning" data-color="warning" onclick="sidebarColor(this)"></span>
-            <span class="badge filter bg-gradient-danger" data-color="danger" onclick="sidebarColor(this)"></span>
-          </div>
-        </a>
-       
-  
-  
+    <!-- Ajoutez ici vos scripts JavaScript -->
 </body>
-
- 
 
 </html>
