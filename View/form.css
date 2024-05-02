@@ -1,20 +1,10 @@
-.error-message {
-    visibility: hidden;
-    
-}
-  
+.error-message,
 .valid-message {
     visibility: hidden;
-    
+    color: red;
+    font-size: 0.8rem;
 }
-  
-.error-message.show {
-    visibility: visible;
-    
-   
-}
-  
-.valid-message.show {
-    visibility: visible;
-    
+
+.error-visible {
+    visibility: visible !important;
 }

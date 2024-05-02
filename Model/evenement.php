@@ -7,17 +7,19 @@ class evenement
     private ?string $date_debut = null;
     private ?string $heure_debut = null;
     private ?string $heure_fin = null;
+    private ?string $date_fin = null;
     private ?string $description_evenement = null;
     private ?float $prix_evenement = null;
     private ?int $idCategorie;
 
-    public function __construct($id_evenement, $titre_evenement, $date_debut, $heure_debut, $heure_fin, $description_evenement, $prix_evenement, $idCategorie)
+    public function __construct($id_evenement, $titre_evenement, $date_debut, $heure_debut, $heure_fin, $date_fin, $description_evenement, $prix_evenement, $idCategorie)
     {
         $this->id_evenement = $id_evenement;
         $this->titre_evenement = $titre_evenement;
         $this->date_debut = $date_debut;
         $this->heure_debut = $heure_debut;
         $this->heure_fin = $heure_fin;
+        $this->date_fin = $date_fin;
         $this->description_evenement = $description_evenement;
         $this->prix_evenement = $prix_evenement;
         $this->idCategorie = $idCategorie;
@@ -170,6 +172,26 @@ class evenement
     public function setHeure_debut($heure_debut)
     {
         $this->heure_debut = $heure_debut;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of date_fin
+     */ 
+    public function getDate_fin()
+    {
+        return $this->date_fin;
+    }
+
+    /**
+     * Set the value of date_fin
+     *
+     * @return  self
+     */ 
+    public function setDate_fin($date_fin)
+    {
+        $this->date_fin = $date_fin;
 
         return $this;
     }

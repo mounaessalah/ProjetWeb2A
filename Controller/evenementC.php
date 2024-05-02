@@ -4,6 +4,35 @@ include '../Model/evenement.php';
 
 class EvenementC
 {
+    // Méthode pour trier les événements par titre
+public function triParTitre()
+{
+    $sql = "SELECT * FROM evenement ORDER BY titre_evenement";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    } catch (PDOException $e) {
+        die('Erreur de base de données: ' . $e->getMessage());
+    }
+}
+
+// Méthode pour trier les événements par date
+public function triParDate()
+{
+    $sql = "SELECT * FROM evenement ORDER BY date_debut";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    } catch (PDOException $e) {
+        die('Erreur de base de données: ' . $e->getMessage());
+    }
+}
+
+
 
     public function listEvenements()
     {
@@ -35,7 +64,7 @@ class EvenementC
     public function addEvenement($evenement)
     {
         $sql = "INSERT INTO evenement  
-        VALUES (:id_evenement, :titre_evenement, :date_debut, :heure_debut, :heure_fin, :description_evenement, :prix_evenement, NOW(), :idCategorie)";
+        VALUES (:id_evenement, :titre_evenement, :date_debut, :heure_debut, :heure_fin, :date_fin, :description_evenement, :prix_evenement, NOW(), :idCategorie)";
         $db = config::getConnexion();
         try {
             $query = $db->prepare($sql);
@@ -45,6 +74,7 @@ class EvenementC
                 'date_debut'=> $evenement->getDate_debut(),
                 ':heure_debut' => $evenement->getHeure_debut(),
                 ':heure_fin' => $evenement->getheure_fin(),
+                ':date_fin'=> $evenement->getDate_fin(),
                 ':description_evenement' => $evenement->getDescription_evenement(),
                 ':prix_evenement' => $evenement->getPrix_evenement(),
                 ':idCategorie' => $evenement->getIdCategorie()
@@ -65,6 +95,7 @@ class EvenementC
                     e.date_debut = :date_debut, 
                     e.heure_debut = :heure_debut, 
                     e.heure_fin = :heure_fin,
+                    e.date_fin = :date_fin, 
                     e.description_evenement = :description_evenement,
                     e.prix_evenement = :prix_evenement,
                     e.idCategorie = :idCategorie
@@ -77,6 +108,7 @@ class EvenementC
                 ':date_debut' => $evenement->getDate_debut(),
                 ':heure_debut' => $evenement->getHeure_debut(),
                 ':heure_fin' => $evenement->getheure_fin(),
+                ':date_fin' => $evenement->getDate_fin(),
                 ':description_evenement' => $evenement->getDescription_evenement(),
                 ':prix_evenement' => $evenement->getPrix_evenement(),
                 ':idCategorie' => $evenement->getIdCategorie()
@@ -108,6 +140,7 @@ class EvenementC
                 $evenement->date_debut,
                 $evenement->heure_debut,
                 $evenement->heure_fin,
+                $evenement->date_fin,
                 $evenement->description_evenement,
                 $evenement->idCategorie,
                 $evenement->prix_evenement

@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       isset($_POST["date_debut"]) &&
     isset($_POST["heure_debut"]) &&
     isset($_POST["heure_fin"]) &&
+    isset($_POST["date_fin"]) &&
     isset($_POST["description"]) &&
     isset($_POST["prix"])&&
     isset($_POST["idCategorie"])
@@ -30,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           !empty($_POST["date_debut"]) &&
         !empty($_POST["heure_debut"]) &&
         !empty($_POST["heure_fin"]) &&
+        !empty($_POST["date_fin"]) &&
         !empty($_POST["description"]) &&
         !empty($_POST["prix"])&&
         !empty($_POST["idCategorie"]) 
@@ -43,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_POST["date_debut"],
             $_POST["heure_debut"],
             $_POST["heure_fin"],
+            $_POST["date_fin"],
             $_POST["description"],
             $_POST["prix"],
             $_POST["idCategorie"] // Passer l'ID de la catégorie
@@ -85,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
-  <link rel="stylesheet" href="form.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -192,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           
-          <h6 class="font-weight-bolder mb-0">ADD NEW EVENT</h6>
+          <h6 class="font-weight-bolder mb-0">AJOUT EVENEMENT</h6>
         </nav>
        
           <ul class="navbar-nav  justify-content-end">
@@ -204,42 +207,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
       </div>
     </nav>
-  <form method="POST" action="upload.php" enctype="multipart/form-data">
-  <div class="row mb-3">
-        <div class="col">
-            <label id='titreLabel' class="form-label">Titre</label>
-            <input type="text" class="form-control" name="titre" id="titre" placeholder="evenement Titre">
-            <span id="error-titre" class="error-message" style="visibility: hidden;">Le champ Titre ne peut pas être vide.</span>
-            <span id="valid-titre" class="valid-message" style="visibility: hidden;">Titre valide</span>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col">
-            <label id='titreLabel' class="form-label">date debut</label>
-            <input type="date" class="form-control" name="date_debut" id="titre" placeholder="date_debut">
-            
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col">
-            <label class="form-label">heure debut</label>
-            <input type="time" class="form-control" name="heure_debut" placeholder="heure_debut">
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col">
-            <label class="form-label">heure fin</label>
-            <input type="time" class="form-control" name="heure_fin" placeholder="heure_fin">
-        </div>
-    <div class="row mb-3">
-        <div class="col">
-            <label class="form-label">Description</label>
-            <input type="text" class="form-control" name="description" id="description" placeholder="evenement Description">
-            <span id="error-description" class="error-message" style="visibility: hidden;">Le champ Description ne peut pas être vide.</span>
-            <span id="valid-description" class="valid-message" style="visibility: hidden;">Description valide</span>
-        </div>
-        
-    </div>
+  
+<form method="POST" action="upload.php" enctype="multipart/form-data" id="insertForm">
+    <label for="titre">Titre :</label>
+    <input type="text" class="form-control" name="titre" id="titre" placeholder="evenement Titre"><br>
+    <span id="error-titre" class="error-message" style="visibility: hidden;">Le champ Titre ne peut pas être vide.</span>
+    <span id="valid-titre" class="valid-message" style="visibility: hidden;">Titre valide</span>
+    <br>
+
+    <label for="date_debut" >Date de début :</label>
+    <input type="date" name="date_debut" id="date_debut"   class="form-control" ><br>
+    <span id="error-date-debut" class="error-message" style="visibility: hidden;">Choisissez une date après 6 jours de la date actuelle.</span>
+    <span id="valid-date-debut" class="valid-message" style="visibility: hidden;">Date valide</span>
+    <br>
+
+    <label for="heure_debut">Heure de début :</label>
+    <input type="time" name="heure_debut" id="heure_debut" class="form-control" ><br>
+
+    <label for="heure_fin">Heure de fin :</label>
+    <input type="time" name="heure_fin" id="heure_fin"  class="form-control" ><br>
+
+    <label for="date_fin">Date de fin :</label>
+    <input type="date" name="date_fin" id="date_fin"  class="form-control" ><br>
+    <span id="error-date-fin" class="error-message" style="visibility: hidden;">Date fin doit être supérieure à la date début.</span>
+    <span id="valid-date-fin" class="valid-message" style="visibility: hidden;">Date valide</span>
+
+    <label for="description">Description :</label>
+    <input type="text" name="description" id="description"  class="form-control"   ><br><br>
+    <span id="error-description" class="error-message" style="visibility: hidden;">Le champ description ne peut pas être vide.</span>
+    <span id="valid-description" class="valid-message" style="visibility: hidden;">Description valide</span>
+    <br>
     <div class="col">
     <label class="form-label">Catégorie</label>
     <select class="form-select" name="idCategorie">
@@ -249,18 +246,80 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </select>
     
  </div>
-
- <div class="col">
-            <label class="form-label">Prix</label>
-            <input type="text" class="form-control" name="prix" placeholder="evenement Prix">
-        </div>
-          <script src="formValidation.js"></script>
-          
-          <div>
-        <button type="submit" class="btn btn-outline-dark me-1" id="insertBtn">Submit</button>
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+    
+    <br>
+    <div class="col">
+    <label for="prix">Prix :</label>
+    <input type="text" name="prix" id="prix" class="form-control"><br><br>
     </div>
-   
-  </form>
+    <div>
+        <button type="submit" class="btn btn-outline-dark me-1" id="insertBtn">Confirmer</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+    </div>
+</form>
+
+<script>
+function validateForm() {
+    var titre = document.getElementById("titre").value;
+    var description = document.getElementById("description").value;
+    var dateDebut = document.getElementById("date_debut").value;
+    var heureDebut = document.getElementById("heure_debut").value;
+    var heureFin = document.getElementById("heure_fin").value;
+    var dateFin = document.getElementById("date_fin").value;
+
+    // Expressions régulières pour vérifier les symboles dans le titre et la description
+    var regex = /^[a-zA-Z0-9\s]*$/;
+
+    // Validation des champs obligatoires
+    if (!titre || !description || !dateDebut || !heureDebut || !heureFin || !dateFin) {
+        alert("Tous les champs sont obligatoires.");
+        return false;
+    }
+
+    // Validation du titre et de la description pour les symboles
+    if (!regex.test(titre) || !regex.test(description)) {
+        alert("Le titre et la description ne doivent pas contenir de symboles.");
+        return false;
+    }
+
+    // Validation de la date de début
+    var sixDaysLater = new Date();
+    sixDaysLater.setDate(sixDaysLater.getDate() + 6);
+    var currentDate = new Date();
+
+    if (new Date(dateDebut) < sixDaysLater || new Date(dateDebut) < currentDate) {
+        alert("La date de début doit être d'au moins 6 jours après aujourd'hui.");
+        return false;
+    }
+
+    // Validation de la date de fin
+    if (new Date(dateFin) <= new Date(dateDebut)) {
+        alert("La date de fin doit être postérieure à la date de début.");
+        return false;
+    }
+
+    // Validation des heures si la date de début est égale à la date de fin
+    if (new Date(dateDebut).getTime() === new Date(dateFin).getTime()) {
+        if (heureFin <= heureDebut) {
+            alert("L'heure de fin doit être supérieure à l'heure de début.");
+            return false;
+        }
+    }
+
+    return true; // Le formulaire est valide
+}
+
+// Écouteur d'événement pour soumettre le formulaire
+document.getElementById("insertForm").addEventListener("submit", function(event) {
+    // Validation du formulaire avant soumission
+    if (!validateForm()) {
+        // Annuler l'envoi du formulaire si la validation échoue
+        event.preventDefault();
+    }
+});
+
+</script>
+</body>
+</html>
 </body>
 </html>

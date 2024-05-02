@@ -166,7 +166,7 @@ if (
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           
-          <h6 class="font-weight-bolder mb-0">ADD NEW categorie</h6>
+          <h6 class="font-weight-bolder mb-0">ajout categorie</h6>
         </nav>
        
           <ul class="navbar-nav  justify-content-end">
@@ -195,8 +195,8 @@ if (
                         
                     </div>
 
-                        <button type="submit" class="btn btn-outline-dark me-1" id="insertBtn" link="uploadCategorie.php">Submit</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancil</button>
+                        <button type="submit" class="btn btn-outline-dark me-1" id="insertBtn" link="uploadCategorie.php">Confirmer</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
                         </div>
                         </form>
                         
@@ -232,14 +232,22 @@ if (
             <td align="center">
 
                 
-                <a href="DeleteCategorie.php?id=<?=$categorie['idCategorie'];?>" class="btn"><i class="fa-solid fa-trash fa-xl"></i>Delete</a>
+                <a href="DeleteCategorie.php?id=<?=$categorie['idCategorie'];?>"onclick="return confirm('voulez vous vraiment supprimer cette categorie?')" class="btn"><i class="fa-solid fa-trash fa-xl"></i>Delete</a>
                 <a href="updateCategorie.php?id=<?=$categorie['idCategorie'];?>" class="btn"><i class="fa-solid fa-trash fa-xl"></i>update</a>
+
+        </td>
 
             </td>
         </tr>
         <?php
         }
         ?>
+        <script>
+    // Function to display a confirmation popup before deleting an event
+    function confirmDelete() {
+      return confirm('voulez vous vraiment supprimer cette categorie?');
+    }
+    </script>
     </tbody>
                   
       

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("insertForm");
+
     form.addEventListener("submit", function (event) {
         event.preventDefault();
         validateForm();
@@ -8,15 +9,20 @@ document.addEventListener("DOMContentLoaded", function () {
     function validateForm() {
         const titre = form.elements["titre"].value.trim();
         const description = form.elements["description"].value.trim();
-        const categorie = form.elements["categorie_evenement"].value;
-        
+        const dateDebut = new Date(form.elements["date_debut"].value);
+        const dateFin = new Date(form.elements["date_fin"].value);
+        const heureDebut = form.elements["heure_debut"].value;
+        const heureFin = form.elements["heure_fin"].value;
         const errorTitre = document.getElementById("error-titre");
         const validTitre = document.getElementById("valid-titre");
         const errorDescription = document.getElementById("error-description");
         const validDescription = document.getElementById("valid-description");
-        const errorCategorie = document.getElementById("error-categorie");
-        const validCategorie = document.getElementById("valid-categorie");
+        const errorDate = document.getElementById("error-date");
+        const validDate = document.getElementById("valid-date");
+        const errorHeure = document.getElementById("error-heure");
+        const validHeure = document.getElementById("valid-heure");
 
+        // Validation du titre et de la description
         if (titre === "") {
             errorTitre.textContent = "Le champ Titre ne peut pas être vide.";
             errorTitre.style.visibility = "visible";
@@ -42,15 +48,28 @@ document.addEventListener("DOMContentLoaded", function () {
             errorDescription.style.visibility = "hidden";
             validDescription.style.visibility = "visible";
         }
-        if (categorie === "") {
-            errorCategorie.textContent = "Veuillez sélectionner une catégorie.";
-            errorCategorie.style.visibility = "visible";
-            validCategorie.style.visibility = "hidden";
-        } else {
-            errorCategorie.style.visibility = "hidden";
-            validCategorie.style.visibility = "visible";
-        }
+
+        // Validation des dates
+        const now = new Date(); // Date actuelle
+        const sixDaysFromNow = new Date(now.getTime() + (6 * 24 * 60 * 60 * 1000)); // 6 jours à partir de maintenant
         
+        if (dateDebut < sixDaysFromNow) {
+            errorDate.textContent = "La date de début doit être au moins 6 jours après la date actuelle.";
+            errorDate.style.visibility = "visible";
+        } else if (dateFin <= dateDebut) {
+            errorDate.textContent = "La date de fin doit être après la date de début.";
+            errorDate.style.visibility = "visible";
+        } else {
+            errorDate.style.visibility = "hidden";
+        }
+
+        // Validation des heures si les dates sont les mêmes
+        if (dateDebut.toDateString() === dateFin.toDateString() && heureDebut >= heureFin) {
+            errorHeure.textContent = "L'heure de début doit être antérieure à l'heure de fin.";
+            errorHeure.style.visibility = "visible";
+        } else {
+            errorHeure.style.visibility = "hidden";
+        }
     }
 
     function containsSymbol(text) {

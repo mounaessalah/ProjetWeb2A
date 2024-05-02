@@ -109,7 +109,7 @@ $listeCategories = $categorieC->listCategories();
                 </g>
               </svg>
             </div>
-            <span class="nav-link-text ms-1">EVENEMENT</span>
+            <span class="nav-link-text ms-1">cours</span>
           </a>
         </li>
         
@@ -126,11 +126,15 @@ $listeCategories = $categorieC->listCategories();
           
           <h6 class="font-weight-bolder mb-0">Tables</h6>
         </nav>
+        <button class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" onclick="triParTitre()">Trier par Titre</button>
+
+    <!-- Bouton pour trier par date -->
+    <button class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" onclick="triParDate()">Trier par Date</button>
        
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="upload.php">add event</a>
-              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="uploadcategorie.php">add categorie</a>
+              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="upload.php">ajouter un  evenement</a>
+              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="uploadcategorie.php">ajouter une  categorie</a>
             </li>
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
@@ -179,12 +183,13 @@ $listeCategories = $categorieC->listCategories();
             <th>Titre</th>
             <th>date debut</th>
             <th>heure debut</th>
+            <th>date fin</th>
             <th>heure fin</th>
             <th>Description</th>
             <th>Catégorie</th>
             <th>Prix</th>
             <th>Actions</th>
-            <th>date</th>
+            <th>date system</th>
             
         </tr>
 
@@ -200,6 +205,7 @@ foreach($list as $evenement){
         <td><?=$evenement['titre_evenement'];?></td>
         <td><?=$evenement['date_debut'];?></td>
         <td><?=$evenement['heure_debut'];?></td>
+        <td><?=$evenement['date_fin'];?></td>
         <td><?=$evenement['heure_fin'];?></td>
         <td><?=$evenement['description_evenement'];?></td>
         
@@ -212,8 +218,8 @@ foreach($list as $evenement){
         <td><?=$evenement['prix_evenement'];?></td>
         
         <td align="center">
-            <a href="Update_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-pen-to-square fa-xl"></i>Update</a>
-            <a href="Delete_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-trash fa-xl"></i>Delete</a>
+            <a href="Update_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-pen-to-square fa-xl"></i>mise a jour</a>
+            <a href="Delete_evenement.php?id=<?=$evenement['id_evenement'];?>" onclick="return confirm('Are you sure you want to delete this event?')" class="btn"><i class="fa-solid fa-trash fa-xl"></i>supression</a>
         </td>
         <td>
 
@@ -224,6 +230,15 @@ foreach($list as $evenement){
     <?php 
 }
 ?>
+            
+          
+    
+    <script>
+    // Function to display a confirmation popup before deleting an event
+    function confirmDelete() {
+      return confirm('Are you sure you want to delete this event?');
+    }
+    </script>
 
     </tbody>
                   

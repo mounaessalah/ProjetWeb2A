@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         isset($_POST["date_debut"]) &&
         isset($_POST["heure_debut"]) &&
         isset($_POST["heure_fin"]) &&
+        isset($_POST["date_fin"]) &&
         isset($_POST["description_evenement"]) &&
         isset($_POST["idCategorie"]) &&
         isset($_POST["prix_evenement"])
@@ -43,6 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             if (!empty($_POST["heure_fin"])) {
                 $evenement->setheure_fin($_POST["heure_fin"]);
+                
+            }
+            if (!empty($_POST["date_fin"])) {
+                $evenement->setDate_fin($_POST["date_fin"]);
                 
             }
             if (!empty($_POST["description_evenement"])) {
@@ -145,6 +150,10 @@ $categories = $categorieC->listCategories();
     <div class="mb-3">
         <label for="heure_debut" class="form-label">heure fin</label>
         <input type="time" class="form-control" id="heure_fin" name="heure_fin" value="<?php echo $evenement->getheure_fin(); ?>" placeholder="heure_fin">
+    </div>
+    <div class="mb-3">
+        <label for="heure_debut" class="form-label">date fin</label>
+        <input type="date" class="form-control" id="date_fin" name="date_fin" value="<?php echo $evenement->getDate_fin(); ?>" placeholder="date_fin">
     </div>
     <div class="mb-3">
         <label for="description_evenement" class="form-label">Description</label>
