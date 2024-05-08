@@ -3,7 +3,38 @@ include '../config.php';
 include '../Model/evenement.php';
 
 class EvenementC
-{ public function getStatistics()
+
+{   public function getEvenementsForCalendarByMonth($currentMonth, $currentYear)
+{
+    // Requête SQL pour sélectionner les événements du mois et de l'année spécifiés
+    $sql = "SELECT titre_evenement, date_debut, heure_debut, heure_fin FROM evenement WHERE MONTH(date_debut) = :month AND YEAR(date_debut) = :year";
+    $db = config::getConnexion();
+    
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':month', $currentMonth, PDO::PARAM_INT);
+        $stmt->bindParam(':year', $currentYear, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    } catch (PDOException $e) {
+        die('Erreur de base de données: ' . $e->getMessage());
+    }
+}
+    public function getEvenementsForCalendar()
+    {
+        $sql = "SELECT titre_evenement, date_debut, heure_debut, date_fin,  heure_fin FROM evenement";
+        $db = config::getConnexion();
+        try {
+            $stmt = $db->query($sql);
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        } catch (PDOException $e) {
+            die('Erreur de base de données: ' . $e->getMessage());
+        }
+    }
+    
+    public function getStatistics()
     {
         $sql = "SELECT c.nom as cat_name, COUNT(e.id_evenement) as evenement_count
         FROM categorie c
@@ -213,4 +244,17 @@ public function getIdCategorie()
             die('Error:' . $e->getMessage());
         }
     }
+
+public function triEvenementsParDate()
+{
+    $sql = "SELECT * FROM evenement ORDER BY date_debut";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    } catch (PDOException $e) {
+        die('Erreur de base de données: ' . $e->getMessage());
+    }
+}
 }

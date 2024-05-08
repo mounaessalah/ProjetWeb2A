@@ -146,8 +146,7 @@ if (isset($_POST['tri_date'])) {
         
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="upload.php">ajouter un  evenement</a>
-              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="uploadcategorie.php">ajouter une  categorie</a>
+              
               <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="listevenement.php">retourner</a>
             </li>
             <li class="nav-item d-flex align-items-center">
@@ -186,7 +185,14 @@ if (isset($_POST['tri_date'])) {
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>table des evenements</h6><form method="post" action="tri.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="tri_date" value="1">Trier par Date</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_titre" value="1">Trier par Titre</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_categorie" value="1">Trier par categorie</button>
+              <h6>table des evenements</h6><form method="post" action="tri.php">
+    <select class="btn btn-outline-primary btn-sm mb-0 me-3" name="tri">
+        <option value="tri_date">Trier par Date</option>
+        <option value="tri_titre">Trier par Titre</option>
+        <option value="tri_categorie">Trier par Catégorie</option>
+    </select>
+    <button class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit">Trier</button>
+</form> 
             </div>
             
             <div class="card-body px-0 pt-0 pb-2">

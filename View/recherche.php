@@ -182,10 +182,8 @@ if (isset($_GET['q'])) {
             <tr>
                 <th>ID</th>
                 <th>Titre</th>
-                <th>Date de début</th>
-                <th>Heure de début</th>
-                <th>Date de fin</th>
-                <th>Heure de fin</th>
+                <th>Date/heure de début</th>
+                <th>Date/heure de fin</th>
                 <th>Description</th>
                 <th>Catégorie</th>
                 <th>Prix</th>
@@ -197,10 +195,8 @@ if (isset($_GET['q'])) {
                 <tr>
                     <td><?= $evenement['id_evenement']; ?></td>
                     <td><?= $evenement['titre_evenement']; ?></td>
-                    <td><?= $evenement['date_debut']; ?></td>
-                    <td><?= $evenement['heure_debut']; ?></td>
-                    <td><?= $evenement['date_fin']; ?></td>
-                    <td><?= $evenement['heure_fin']; ?></td>
+                    <td><?= $evenement['date_debut']; ?>  <?= $evenement['heure_debut']; ?></td>
+                    <td><?= $evenement['date_fin']; ?>  <?= $evenement['heure_fin']; ?></td>
                     <td><?= $evenement['description_evenement']; ?></td>
                     <td><?= $categorieC->getCategorieNameById($evenement['idCategorie']); ?></td>
                     <td><?= $evenement['prix_evenement']; ?></td>

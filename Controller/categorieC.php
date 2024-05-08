@@ -3,7 +3,8 @@
 require_once '../config.php';
 include '../Model/categorie.php';
 class CategorieC
-{
+{ 
+
     public function listCategorieee()
     {
         $sql = "SELECT * FROM categorie ORDER BY idCategorie DESC";

@@ -138,6 +138,8 @@ if (isset($_POST['tri_date'])) {
         <nav aria-label="breadcrumb">
           
           <h6 class="font-weight-bolder mb-0">Tables</h6>
+          <form action="statistique.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="stat" value="1">statistique</button></form>
+          <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="calendrier.php">calendrier</a>
         </nav>
     
         
@@ -149,8 +151,11 @@ if (isset($_POST['tri_date'])) {
             </li>
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
+              <form method="get" action="recherche.php">
+    <input  class="btn btn-outline-primary btn-sm mb-0 me-3" type="text" name="q" placeholder="Rechercher...">
+    <button class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" action="recherche.php" link="recherche.php">Rechercher</button>
+    
+</form>
               </a>
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -183,13 +188,17 @@ if (isset($_POST['tri_date'])) {
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>table des evenements</h6><form method="post" action="tri.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="tri_date" value="1">Trier par Date</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_titre" value="1">Trier par Titre</button><button  class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" name="tri_titre" value="1">Trier par categorie</button></form>
-<form method="get" action="recherche.php">
-    <input  class="btn btn-outline-primary btn-sm mb-0 me-3" type="text" name="q" placeholder="Rechercher...">
-    <button class="btn btn-outline-primary btn-sm mb-0 me-3"  type="submit" action="recherche.php">Rechercher</button>
-    
+              
+<h6>table des evenements</h6><form method="post" action="tri.php">
+    <select class="btn btn-outline-primary btn-sm mb-0 me-3" name="tri">
+        <option value="tri_date">Trier par Date</option>
+        <option value="tri_titre">Trier par Titre</option>
+        <option value="tri_categorie">Trier par Catégorie</option>
+    </select>
+    <button class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit">Trier</button>
 </form>
-<form action="statistique.php"><button  class="btn btn-outline-primary btn-sm mb-0 me-3" type="submit" name="stat" value="1">statistique</button></form>
+
+
             </div>
             
             <div class="card-body px-0 pt-0 pb-2">
@@ -199,10 +208,8 @@ if (isset($_POST['tri_date'])) {
                   <tr>
             <th>#</th>
             <th>Titre</th>
-            <th>date debut</th>
-            <th>heure debut</th>
-            <th>date fin</th>
-            <th>heure fin</th>
+            <th>date/heure debut</th>
+            <th>date/heure fin</th>
             <th>Description</th>
             <th>Catégorie</th>
             <th>Prix</th>
@@ -221,10 +228,8 @@ foreach($list as $evenement){
     <tr>
         <td><?=$evenement['id_evenement'];?></td>
         <td><?=$evenement['titre_evenement'];?></td>
-        <td><?=$evenement['date_debut'];?></td>
-        <td><?=$evenement['heure_debut'];?></td>
-        <td><?=$evenement['date_fin'];?></td>
-        <td><?=$evenement['heure_fin'];?></td>
+        <td><?=$evenement['date_debut'];?>        <?=$evenement['heure_debut'];?></td>
+        <td><?=$evenement['date_fin'];?>         <?=$evenement['heure_fin'];?></td>
         <td><?=$evenement['description_evenement'];?></td>
         
         <td>
@@ -236,7 +241,7 @@ foreach($list as $evenement){
         <td><?=$evenement['prix_evenement'];?></td>
         
         <td align="center">
-            <a href="Update_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-pen-to-square fa-xl"></i>mise a jour</a>
+            <a href="Update_evenement.php?id=<?=$evenement['id_evenement'];?>" class="btn"><i class="fa-solid fa-pen-to-square fa-xl" link="Update_evenement.php"></i>mise a jour</a>
             <a href="Delete_evenement.php?id=<?=$evenement['id_evenement'];?>" onclick="return confirm('Are you sure you want to delete this event?')" class="btn"><i class="fa-solid fa-trash fa-xl"></i>supression</a>
         </td>
         <td>

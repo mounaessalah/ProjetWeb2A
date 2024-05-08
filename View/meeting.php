@@ -1,9 +1,15 @@
 <?php
 include '../Controller/evenementC.php';
+include '../Controller/categorieC.php';
 
 $evenementC = new evenementC();
 $error = "";
 $list = $evenementC->listevenements();
+// Créez une instance de la classe CategorieC
+$categorieC = new CategorieC();
+
+// Appelez la méthode listCategories pour récupérer toutes les catégories
+$listeCategories = $categorieC->listCategories();
 
 ?>
 <!DOCTYPE html>
@@ -126,7 +132,10 @@ https://templatemo.com/tm-569-edu-meeting
                     <div class="down-content">
                        
                         <p> <h4> catégories :</h4> </p>
-                        <a href="meeting-details.html"><h6><?php echo $evenement['idCategorie']; ?></h6></a>
+                        <a href="meeting-details.html"><h6><?php 
+            // Afficher le nom de la catégorie en utilisant la méthode getCategorieNameById
+                      echo $categorieC->getCategorieNameById($evenement['idCategorie']);
+            ?></a>
                         <br>
 
                         <p><h4> titre :</h4> <h4><?php echo $evenement['titre_evenement']; ?></h4></p>

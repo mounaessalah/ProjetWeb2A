@@ -1,119 +1,61 @@
 <?php
-include '../Controller/evenementC.php';
-include '../Controller/categorieC.php';
+// Inclure votre fichier de connexion à la base de données et votre modèle de gestion des événements
 
-$evenementC = new EvenementC();
-$categorieC = new CategorieC();
+include '../Controller/evenementC.php'; // Assurez-vous d'inclure le fichier contenant la classe EvenementC
 
-$c = new evenementC();
-$categorie = new categorieC();
-$statistics = $c->getStatistics();
+// Créez une instance de la classe EvenementC
+$evenementC = new evenementC();
 
-// Calculate total evenements
-$totalevenements = 0;
-foreach ($statistics as $stat) {
-    $totalevenements += $stat['evenement_count'];
+// Appel de la fonction pour récupérer les événements
+$eventsData = $evenementC->getEvenementsForCalendar();
+
+
+// Formater les données d'événement pour FullCalendar
+$formattedEvents = array();
+foreach ($eventsData as $evenement) {
+    $formattedEvents[] = array(
+        'title' => $evenement['titre_evenement'],
+        'start' => $evenement['date_debut'] . 'T' . $evenement['heure_debut'], // Format: YYYY-MM-DDTHH:MM:SS
+        'end' => $evenement['date_fin'] . 'T' . $evenement['heure_fin'] // Format: YYYY-MM-DDTHH:MM:SS
+    );
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
+<meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Education et Formation</title>
-  <!-- Fonts and icons -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  
+  <title>
+  Calendrier des événements
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
-  <link href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet">
-  <style>
-    /* Ajouter des styles personnalisés ici */
-    body {
-      font-family: 'Open Sans', sans-serif;
-      background-color: #f8f9fe;
-    }
-
-    .card {
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .statistics-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-
-    .statistics-table {
-      flex: 1;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .statistics-table table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .statistics-table th,
-    .statistics-table td {
-      padding: 10px 15px;
-      text-align: left;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    .statistics-table th {
-      background-color: #f8f9fe;
-      font-weight: bold;
-    }
-
-    .chart-container {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .chart {
-      position: relative;
-      width: 150px;
-      height: 150px;
-    }
-
-    .chart span {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .chart svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    .progress-ring__circle {
-      fill: none;
-      stroke-width: 5;
-      stroke-linecap: round;
-      animation: progress 1s ease-out forwards;
-    }
-
-    @keyframes progress {
-      from {
-        stroke-dasharray: 0 100;
-      }
-    }
-  </style>
+  <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
+  <!-- Nepcha Analytics (nepcha.com) -->
+  <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+  <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+  
+    <!-- FullCalendar CSS -->
+    
+    <!-- jQuery -->
+	 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script> 
 </head>
+
 <body class="g-sidenav-show  bg-gray-100">
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
@@ -199,19 +141,19 @@ foreach ($statistics as $stat) {
         <nav aria-label="breadcrumb">
           
           <h6 class="font-weight-bolder mb-0">Tables</h6>
+          
         </nav>
     
         
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="upload.php">ajouter un  evenement</a>
-              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="uploadcategorie.php">ajouter une  categorie</a>
-              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="listevenement.php">retourner</a>
+            
+              <a class="btn btn-outline-primary btn-sm mb-0 me-3" target="_blank" href="listevenement.php">retouner</a>
+             
             </li>
-            <li class="nav-item d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
+            
+    
+</form>
               </a>
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -239,67 +181,28 @@ foreach ($statistics as $stat) {
       </div>
     </nav>
     <!-- End Navbar -->
-  <!-- Sidebar -->
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3" id="sidenav-main">
-    <!-- Sidebar content -->
-  </aside>
-  <!-- Main content -->
-  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
-    <!-- Content header -->
-    <div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-lg-6 mb-4">
-          <div class="card">
-            <div class="card-header pb-0">
-              <h6 class="mb-0">Evenement Statistics</h6>
-            </div>
-            <div class="card-body px-0 pt-0 pb-2">
-              <div class="statistics-container">
-                <div class="statistics-table">
-                  <p class="btn btn-outline-primary btn-sm mb-3">Total Evenements: <?= $totalevenements; ?></p>
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Nom de la catégorie</th>
-                        <th>Evenements</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php foreach ($statistics as $stat) : ?>
-                        <tr>
-                          <td><?= $stat['cat_name']; ?></td>
-                          <td><?= $stat['evenement_count']; ?></td>
-                        </tr>
-                      <?php endforeach; ?>
-                    </tbody>
-                  
-                </div>
-                <div class="chart-container">
-    <?php foreach ($statistics as $stat) : ?>
-        <?php
-        $percentage = ($totalevenements > 0) ? round(($stat['evenement_count'] / $totalevenements) * 100) : 0;
-        ?>
-        <div class="chart">
-        <h6>pourcentage :  <?= $stat['cat_name']; ?></h6>
-        <svg class="progress-ring" width="120" height="120">
-    <circle class="progress-ring__circle" stroke="green" cx="60" cy="60" r="40" stroke-dasharray="<?= round(2 * pi() * 54 * $percentage / 100) ?>, 100" transform="rotate(-90,60,60)" />
-    <text x="48%" y="50%" text-anchor="middle" fill="#333" font-size="24"><?= $percentage; ?>%</text>
-</svg>
-        </div>
-    <?php endforeach; ?>
-</div>
-              </div>
-            </div>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-  <!-- Scripts -->
-  <script>
-    // Ajouter des scripts personnalisés ici
-  </script>
-</body>
+<h2><center>Calendrier</center></h2>
+  <div class="container">
+   <div id="calendar"></div>
+  </div>
+    <br>
 
+    <script>
+        $(document).ready(function() {
+            // Initialisation de FullCalendar
+            $('#calendar').fullCalendar({
+                // Options de configuration
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay'
+                },
+                defaultView: 'month', // Vue par défaut
+                editable: false, // Désactiver l'édition des événements
+                eventLimit: true, // Limiter l'affichage des événements
+                events: <?php echo json_encode($formattedEvents); ?> // Passer les événements formatés à FullCalendar
+            });
+        });
+    </script>
+</body>
 </html>

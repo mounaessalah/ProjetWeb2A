@@ -184,21 +184,45 @@ if (
 
    
     <form method="POST" id="insertForm" action="uploadcategorie.php" enctype="multipart/form-data">
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label id='nom' class="form-label">nom</label>
-                            <input type="text" class="form-control" name="nom" placeholder="categorie nom">
-                        </div>
-                        </div>
-                        <div class="row mb-3">
+    <div class="row mb-3">
+        <div class="col">
+            <label id='nom' class="form-label">Nom</label>
+            <input type="text" class="form-control" name="nom" id="nomInput" placeholder="Catégorie nom">
+            <span id="error-nom" class="error-message" style="visibility: hidden;">Le champ Nom ne peut pas être vide.</span>
+            <span id="valid-nom" class="valid-message" style="visibility: hidden;">Nom valide</span>
+        </div>
+    </div>
 
-                        
-                    </div>
+    <button type="submit" class="btn btn-outline-dark me-1" id="insertBtn" href="uploadCategorie.php">Confirmer</button>
+    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+</form>
 
-                        <button type="submit" class="btn btn-outline-dark me-1" id="insertBtn" link="uploadCategorie.php">Confirmer</button>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
-                        </div>
-                        </form>
+<script>
+    function validateForm() {
+        var nom = document.getElementById("nomInput").value;
+
+        // Validation du champ nom
+        if (!nom) {
+            document.getElementById("error-nom").style.visibility = "visible";
+            document.getElementById("valid-nom").style.visibility = "hidden";
+            return false;
+        } else {
+            document.getElementById("error-nom").style.visibility = "hidden";
+            document.getElementById("valid-nom").style.visibility = "visible";
+        }
+
+        return true; // Le formulaire est valide
+    }
+
+    // Écouteur d'événement pour soumettre le formulaire
+    document.getElementById("insertForm").addEventListener("submit", function(event) {
+        // Validation du formulaire avant soumission
+        if (!validateForm()) {
+            // Annuler l'envoi du formulaire si la validation échoue
+            event.preventDefault();
+        }
+    });
+</script>
                         
  
  
