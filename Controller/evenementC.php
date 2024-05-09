@@ -4,7 +4,24 @@ include '../Model/evenement.php';
 
 class EvenementC
 
-{   public function getEvenementsForCalendarByMonth($currentMonth, $currentYear)
+{  
+    
+    
+    public function get_event_details_by_id($evenement_id) {
+    $sql = "SELECT * FROM evenement WHERE id_evenement = :id_evenement";
+    $db = config::getConnexion(); // Assurez-vous d'avoir une connexion à la base de données
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':id_evenement', $evenement_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $evenement_details = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $evenement_details;
+    } catch (PDOException $e) {
+        // En cas d'erreur de requête
+        die('Erreur de base de données: ' . $e->getMessage());
+    }
+}
+    public function getEvenementsForCalendarByMonth($currentMonth, $currentYear)
 {
     // Requête SQL pour sélectionner les événements du mois et de l'année spécifiés
     $sql = "SELECT titre_evenement, date_debut, heure_debut, heure_fin FROM evenement WHERE MONTH(date_debut) = :month AND YEAR(date_debut) = :year";

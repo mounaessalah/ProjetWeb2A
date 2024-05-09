@@ -152,7 +152,7 @@ https://templatemo.com/tm-569-edu-meeting
                         <br>
                         <h4>description :</h4>  <h4> <?php echo $evenement['description_evenement']; ?> </h4>
                         <br>
-                        <button>s'inscrire</button>
+                        <a href="evenement_details.php?id=<?php echo $evenement['id_evenement']; ?>" class="btn btn-primary">Voir plus</a>
 
                     </div>
                 </div>

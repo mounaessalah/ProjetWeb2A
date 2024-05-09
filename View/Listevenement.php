@@ -214,7 +214,7 @@ if (isset($_POST['tri_date'])) {
             <th>Catégorie</th>
             <th>Prix</th>
             <th>Actions</th>
-            <th>date system</th>
+           
             
         </tr>
 
@@ -246,7 +246,7 @@ foreach($list as $evenement){
         </td>
         <td>
 
-        <td><?=$evenement['date_ajout'];?></td>
+        
         </td>
         
     </tr>
